@@ -2,9 +2,208 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{% block title %}{% endblock %}</title>
+        <title>{% block title %}Smart Curriculum & Attendance{% endblock %}</title>
+
+        <!-- Tailwind -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Feather Icons -->
+        <script src="https://unpkg.com/feather-icons"></script>
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Nunito:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ["Poppins", "sans-serif"],
+                            heading: ["Nunito", "sans-serif"],
+                            mont: ["Montserrat", "sans-serif"],
+                        },
+                        colors: {
+                            lavender: "#F6F6FF",
+                            orange: "#FCAB64",
+                            deepred: "#B3001B",
+                            darkblue: "#2D3142",
+                            skyblue: "#6CB4EE",
+                        },
+                    },
+                },
+            };
+        </script>
+
+        <style>
+            body {
+                background: #2d3142; /* darkblue color */
+                background-attachment: fixed;
+                font-family: "Poppins", sans-serif;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            /* Fade Animation */
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .animate-fadeIn {
+                animation: fadeIn 0.5s ease-in-out;
+            }
+
+            /* Custom scrollbar styling */
+            ::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: white;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: gray;
+                border-radius: 0px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #666;
+            }
+        </style>
+
+        {% block extra_head %}{% endblock %}
     </head>
-    <body>
-        {% block content %}{% endblock %}
+    <body class="flex min-h-screen text-gray-800">
+        <!-- Sidebar Navbar -->
+        <aside class="w-50 bg-darkblue text-white p-6 flex flex-col space-y-6 fixed top-4 bottom-4 left-4 rounded-3xl">
+            <h1 class="text-3xl font-bold font-heading mb-4 flex items-center gap-2">
+                <i data-feather="book" class="w-8 h-8 text-skyblue"></i>
+                Smart App
+            </h1>
+            <nav class="flex-1">
+                <ul class="space-y-5 text-lg">
+                    <li>
+                        <a href="{{ url_for('views.dashboard') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.dashboard' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                            ><i data-feather="home" class="w-5 h-5 mr-2 text-gray-300"></i> Dashboard</a
+                        >
+                    </li>
+                    <li>
+                        <a href="{{ url_for('views.curriculum') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.curriculum' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                            ><i data-feather="book-open" class="w-5 h-5 mr-2 text-gray-300"></i> Curriculum</a
+                        >
+                    </li>
+                    <li>
+                        <a href="{{ url_for('views.attendance') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.attendance' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                            ><i data-feather="bar-chart" class="w-5 h-5 mr-2 text-gray-300"></i> Attendance</a
+                        >
+                    </li>
+                    <li>
+                        <a href="{{ url_for('views.calendar') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.calendar' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                            ><i data-feather="calendar" class="w-5 h-5 mr-2 text-gray-300"></i> Calendar</a
+                        >
+                    </li>
+                    <li>
+                        <a href="{{ url_for('views.settings') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.settings' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                            ><i data-feather="settings" class="w-5 h-5 mr-2 text-gray-300"></i> Settings</a
+                        >
+                    </li>
+                    <li>
+                        <a href="{{ url_for('views.about') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.about' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"><i data-feather="info" class="w-5 h-5 mr-2 text-gray-300"></i> About</a>
+                    </li>
+                    <li class="border-t border-gray-600 pt-3 mt-3">
+                        <a href="{{ url_for('auth.logout') }}" class="w-full text-left py-2 hover:text-red-400 flex items-center text-red-300" onclick="return confirm('Are you sure you want to logout?')"><i data-feather="log-out" class="w-5 h-5 mr-2"></i> Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8 mx-6 my-4 ml-72 mr-[21rem] overflow-y-auto bg-white rounded-l-3xl shadow-2xl">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+            <div class="mb-6">
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} p-4 mb-4 rounded-lg {% if category == 'error' %}bg-red-100 border border-red-400 text-red-700{% else %}bg-green-100 border border-green-400 text-green-700{% endif %}">
+                    <div class="flex items-center">
+                        <span class="text-sm font-medium">{{ message }}</span>
+                        <button type="button" class="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex h-8 w-8 text-gray-500 hover:text-gray-900" onclick="this.parentElement.parentElement.style.display='none'">
+                            <span class="sr-only">Close</span>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %} {% endwith %} {% block content %}{% endblock %}
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="w-80 bg-white shadow-lg p-6 flex flex-col space-y-6 fixed right-4 top-4 bottom-4 rounded-r-3xl">
+            <!-- Profile -->
+            <a href="{{ url_for('views.settings') }}" class="cursor-pointer flex items-center justify-between">
+                <!-- Name and Role on the left -->
+                <div class="flex-1">
+                    <h2 class="text-xl font-bold">{{ student.name if student else "Student" }}</h2>
+                    <p class="text-sm text-gray-500">{{ student.role if student else "Student" }}, {{ student.location if student else "Delhi" }}</p>
+                </div>
+                <!-- Profile icon on the right -->
+                <div class="w-16 h-16 rounded-full bg-skyblue flex items-center justify-center text-2xl ml-4"><i data-feather="user" class="w-8 h-8 text-white"></i></div>
+            </a>
+
+            <!-- Calendar will be inserted here from child templates -->
+            {% block sidebar_content %}{% endblock %}
+
+            <!-- Queries - Only shown on Dashboard and Attendance pages -->
+            {% if request.endpoint == 'views.dashboard' or request.endpoint == 'views.attendance' %}
+            <div>
+                <h3 class="font-bold flex items-center"><i data-feather="help-circle" class="w-5 h-5 mr-2 text-gray-600"></i> Queries</h3>
+                <div id="queryMessage" class="text-sm text-green-600 mt-2"></div>
+                <button onclick="raiseQuery()" class="bg-skyblue text-white px-3 py-1 rounded-lg mr-2">Raise</button>
+                <button onclick="revokeQuery()" class="bg-red-500 text-white px-3 py-1 rounded-lg">Revoke</button>
+            </div>
+            {% endif %}
+        </aside>
+
+        <script>
+            // Base functionality for all pages
+            // Queries functionality
+            function raiseQuery() {
+                alert("Query Raised Successfully");
+                document.getElementById("queryMessage").textContent = "Query Raised Successfully";
+                if (typeof addNotification === "function") {
+                    addNotification("query", "You raised a query");
+                }
+            }
+
+            function revokeQuery() {
+                alert("Query Revoked");
+                document.getElementById("queryMessage").textContent = "";
+                if (typeof addNotification === "function") {
+                    addNotification("absent", "Your query has been revoked");
+                }
+            }
+
+            // Initialize page
+            document.addEventListener("DOMContentLoaded", function () {
+                // Initialize Feather icons
+                if (typeof feather !== "undefined") {
+                    feather.replace();
+                }
+            });
+        </script>
+
+        {% block scripts %}{% endblock %}
     </body>
 </html>

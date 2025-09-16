@@ -1,0 +1,23 @@
+{
+  "events": {
+    "2025-01-26": "Republic Day",
+    "2025-03-15": "Mid Semester Exams (Even Semester)",
+    "2025-04-30": "Project Submission Deadline (Even Semester)",
+    "2025-05-15": "Internal Assessment (Even Semester)",
+    "2025-06-15": "End Semester Exams (Even Semester)",
+    "2025-08-15": "Independence Day",
+    "2025-09-20": "Mid Semester Exams (Odd Semester)",
+    "2025-10-02": "Gandhi Jayanti",
+    "2025-10-30": "Project Submission Deadline (Odd Semester)",
+    "2025-11-15": "Internal Assessment (Odd Semester)",
+    "2025-12-15": "End Semester Exams (Odd Semester)",
+    "2026-01-26": "Republic Day",
+    "2026-03-15": "Mid Semester Exams (Even Semester)",
+    "2026-06-15": "End Semester Exams (Even Semester)"
+  },
+  "recurring_events": {
+    "01-26": "Republic Day",
+    "08-15": "Independence Day",
+    "10-02": "Gandhi Jayanti"
+  }
+}

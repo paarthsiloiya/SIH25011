@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+{% block title %}Settings - Smart Curriculum & Attendance{% endblock %}
+
+{% block content %}
+<!-- Settings Section -->
+<section id="settings">
+    <h1 class="text-4xl font-bold mb-6 flex items-center gap-2"><i data-feather="settings" class="w-8 h-8 text-skyblue"></i> Profile Settings</h1>
+    
+    <!-- Profile Information Form -->
+    <div class="bg-white shadow-lg rounded-xl p-6 space-y-6 max-w-2xl">
+        <h2 class="text-2xl font-semibold mb-4">Personal Information</h2>
+        
+        <!-- Profile Picture Section -->
+        <div class="flex items-center space-x-4 mb-6">
+            <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
+                <i data-feather="user" class="w-10 h-10 text-gray-500"></i>
+            </div>
+            <div>
+                <button class="bg-skyblue text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition">Change Photo</button>
+                <p class="text-sm text-gray-500 mt-1">JPG, PNG or GIF (max. 2MB)</p>
+            </div>
+        </div>
+
+        <!-- Form Fields -->
+        <div class="grid md:grid-cols-2 gap-4">
+            <label class="flex flex-col gap-2">
+                <span class="flex items-center gap-2 font-medium">
+                    <i data-feather="user" class="w-4 h-4 text-gray-600"></i> Full Name
+                </span>
+                <input id="name" value="{{ student.name or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter your full name" />
+            </label>
+            
+            <label class="flex flex-col gap-2">
+                <span class="flex items-center gap-2 font-medium">
+                    <i data-feather="mail" class="w-4 h-4 text-gray-600"></i> Email
+                </span>
+                <input id="email" value="{{ student.email or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter your email" />
+            </label>
+            
+            <label class="flex flex-col gap-2">
+                <span class="flex items-center gap-2 font-medium">
+                    <i data-feather="phone" class="w-4 h-4 text-gray-600"></i> Phone
+                </span>
+                <input id="phone" value="{{ student.phone or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter your phone number" />
+            </label>
+            
+            <label class="flex flex-col gap-2">
+                <span class="flex items-center gap-2 font-medium">
+                    <i data-feather="calendar" class="w-4 h-4 text-gray-600"></i> Date of Birth
+                </span>
+                <input id="dob" type="date" value="{{ student.date_of_birth or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" />
+            </label>
+        </div>
+
+        <h2 class="text-2xl font-semibold mt-8 mb-4">Academic Information</h2>
+        
+        <div class="grid md:grid-cols-2 gap-4">
+            <label class="flex flex-col gap-2">
+                <span class="flex items-center gap-2 font-medium">
+                    <i data-feather="hash" class="w-4 h-4 text-gray-600"></i> Enrollment Number
+                </span>
+                <input id="enrollment" value="{{ student.enrollment_number or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter enrollment number" />
+            </label>
+            
+            <label class="flex flex-col gap-2">
+                <span class="flex items-center gap-2 font-medium">
+                    <i data-feather="book" class="w-4 h-4 text-gray-600"></i> Branch
+                </span>
+                <select id="branch" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent">
+                    <option value="CSE" {% if student.branch == 'CSE' %}selected{% endif %}>Computer Science & Engineering</option>
+                    <option value="AIML" {% if student.branch == 'AIML' %}selected{% endif %}>AI & Machine Learning</option>
+                    <option value="AIDS" {% if student.branch == 'AIDS' %}selected{% endif %}>AI & Data Science</option>
+                    <option value="CST" {% if student.branch == 'CST' %}selected{% endif %}>Computer Science & Technology</option>
+                </select>
+            </label>
+            
+            <label class="flex flex-col gap-2">
+                <span class="flex items-center gap-2 font-medium">
+                    <i data-feather="layers" class="w-4 h-4 text-gray-600"></i> Current Semester
+                </span>
+                <select id="semester" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent">
+                    {% for i in range(1, 9) %}
+                    <option value="{{ i }}" {% if student.semester == i %}selected{% endif %}>Semester {{ i }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            
+            <label class="flex flex-col gap-2">
+                <span class="flex items-center gap-2 font-medium">
+                    <i data-feather="building" class="w-4 h-4 text-gray-600"></i> Institution
+                </span>
+                <input id="inst" value="{{ student.institution or 'Delhi Technical University' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter institution name" />
+            </label>
+            
+            <label class="flex flex-col gap-2">
+                <span class="flex items-center gap-2 font-medium">
+                    <i data-feather="graduation-cap" class="w-4 h-4 text-gray-600"></i> Graduation Year
+                </span>
+                <input id="grad" type="number" value="{{ student.graduation_year or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter graduation year" min="2024" max="2030" />
+            </label>
+            
+            <label class="flex flex-col gap-2">
+                <span class="flex items-center gap-2 font-medium">
+                    <i data-feather="briefcase" class="w-4 h-4 text-gray-600"></i> Department
+                </span>
+                <input id="department" value="{{ student.department or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter department" />
+            </label>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-4 pt-6">
+            <button onclick="saveProfile()" class="bg-skyblue px-6 py-3 rounded-lg text-white hover:bg-blue-500 transition font-medium">Save Changes</button>
+            <button onclick="resetForm()" class="bg-gray-500 px-6 py-3 rounded-lg text-white hover:bg-gray-600 transition font-medium">Reset</button>
+        </div>
+    </div>
+
+    <!-- Account Settings -->
+    <div class="bg-white shadow-lg rounded-xl p-6 space-y-6 max-w-2xl mt-8">
+        <h2 class="text-2xl font-semibold mb-4">Account Settings</h2>
+        
+        <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div>
+                    <h3 class="font-medium">Change Password</h3>
+                    <p class="text-sm text-gray-500">Update your password to keep your account secure</p>
+                </div>
+                <button class="bg-orange text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition">Change</button>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div>
+                    <h3 class="font-medium">Two-Factor Authentication</h3>
+                    <p class="text-sm text-gray-500">Add an extra layer of security to your account</p>
+                </div>
+                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">Enable</button>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 border border-red-200 rounded-lg bg-red-50">
+                <div>
+                    <h3 class="font-medium text-red-700">Delete Account</h3>
+                    <p class="text-sm text-red-600">Permanently delete your account and all data</p>
+                </div>
+                <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">Delete</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block sidebar_content %}
+<!-- Settings Navigation in Sidebar -->
+<div>
+    <h3 class="font-bold mb-2 flex items-center gap-2"><i data-feather="user" class="w-4 h-4 text-gray-600"></i> Profile</h3>
+    <div class="space-y-2 text-sm">
+        <div class="p-2 bg-skyblue/10 rounded text-skyblue">
+            <div class="font-medium">{{ student.name or 'Student' }}</div>
+            <div class="text-xs">{{ student.email or 'No email set' }}</div>
+        </div>
+        
+        <div class="space-y-1 text-xs text-gray-600">
+            <div><strong>Branch:</strong> {{ student.branch or 'Not set' }}</div>
+            <div><strong>Semester:</strong> {{ student.semester or 'Not set' }}</div>
+            <div><strong>Enrollment:</strong> {{ student.enrollment_number or 'Not set' }}</div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <h4 class="font-semibold text-sm mb-2">Quick Actions</h4>
+        <div class="space-y-1 text-xs">
+            <button onclick="scrollToSection('personal')" class="w-full text-left p-2 hover:bg-gray-100 rounded">Personal Info</button>
+            <button onclick="scrollToSection('academic')" class="w-full text-left p-2 hover:bg-gray-100 rounded">Academic Info</button>
+            <button onclick="scrollToSection('account')" class="w-full text-left p-2 hover:bg-gray-100 rounded">Account Settings</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initialize Feather icons
+        if (typeof feather !== "undefined") {
+            feather.replace();
+        }
+    });
+
+    // Save Profile function
+    function saveProfile() {
+        const profileData = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            dob: document.getElementById("dob").value,
+            enrollment: document.getElementById("enrollment").value,
+            branch: document.getElementById("branch").value,
+            semester: document.getElementById("semester").value,
+            institution: document.getElementById("inst").value,
+            graduation_year: document.getElementById("grad").value,
+            department: document.getElementById("department").value
+        };
+        
+        // Here you would typically send this data to the server
+        console.log("Profile data to save:", profileData);
+        
+        // Show success message
+        alert("Profile updated successfully!");
+        
+        // You can implement actual form submission here
+        // For example: fetch('/update-profile', { method: 'POST', body: JSON.stringify(profileData) })
+    }
+
+    // Reset form function
+    function resetForm() {
+        if (confirm("Are you sure you want to reset all changes?")) {
+            // Reload the page to reset form
+            window.location.reload();
+        }
+    }
+
+    // Scroll to specific section function
+    function scrollToSection(section) {
+        const element = document.querySelector(`h2:contains("${section === 'personal' ? 'Personal Information' : section === 'academic' ? 'Academic Information' : 'Account Settings'}")`);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // Form validation
+    function validateForm() {
+        const requiredFields = ['name', 'email', 'branch', 'semester'];
+        const errors = [];
+        
+        requiredFields.forEach(field => {
+            const element = document.getElementById(field);
+            if (!element.value.trim()) {
+                errors.push(`${field.charAt(0).toUpperCase() + field.slice(1)} is required`);
+            }
+        });
+        
+        // Email validation
+        const email = document.getElementById("email").value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email && !emailRegex.test(email)) {
+            errors.push("Please enter a valid email address");
+        }
+        
+        return errors;
+    }
+
+    // Add real-time validation
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputs = document.querySelectorAll("input, select");
+        inputs.forEach(input => {
+            input.addEventListener("blur", function() {
+                if (this.hasAttribute("required") && !this.value.trim()) {
+                    this.classList.add("border-red-500");
+                } else {
+                    this.classList.remove("border-red-500");
+                }
+            });
+        });
+    });
+
+    console.log("Settings script loaded");
+</script>
+{% endblock %}
