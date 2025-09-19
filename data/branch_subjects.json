@@ -74,7 +74,7 @@
             "code": "AIML201",
             "credits": 3
       },
-       {    {"name": "Foundation Of Data Science",
+       {     "name": "Foundation Of Data Science",
              "faculty": "Ms. Maroofa Yaseen",
              "icon": "https://img.icons8.com/ios/100/add-node.png",
              "code": "AIML203",
@@ -100,7 +100,8 @@
             "icon": "",
             "code": "AIML209",
             "credits": 4
-         },  {
+         },
+         {
            "name": "Universal Human Values-II",
             "faculty": "",
             "icon": "",
@@ -123,7 +124,6 @@
          },
        ] 
       }
-
     },    
     "AIDS": {
       "name": "Artificial Intelligence & Data Science",
