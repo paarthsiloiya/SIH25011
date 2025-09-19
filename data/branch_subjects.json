@@ -11,6 +11,7 @@
             "code": "ES-101",
             "credits": 3
           },
+          
           {
             "name": "Applied Mathematics I",
             "faculty": "Mr. Devesh Kumar",
@@ -49,11 +50,7 @@
             "credits": 4
           },
           {
-            "name": "Data Structures",
-            "faculty": "Ms. Upasna Joshi",
-            "icon": "https://img.icons8.com/ios/100/add-node.png",
-            "code": "DS-201",
-            "credits": 4
+          
           },
           {
             "name": "Machine Learning Basics",
@@ -69,9 +66,65 @@
             "code": "STAT-201",
             "credits": 3
           }
-        ]
+        ],
+       "3":[  
+         {"name": "Data Structures",
+            "faculty": "Ms. Upasna Joshi",
+            "icon": "https://img.icons8.com/ios/100/add-node.png",
+            "code": "AIML201",
+            "credits": 3
+      },
+       {    {"name": "Foundation Of Data Science",
+             "faculty": "Ms. Maroofa Yaseen",
+             "icon": "https://img.icons8.com/ios/100/add-node.png",
+             "code": "AIML203",
+             "credits": 3
+    }, 
+       {
+         "name": "Digital Logic Design",
+            "faculty": "Mr. Anuj Rana",
+            "icon": "",
+            "code": "AIML205",
+            "credits": 3
+       },
+         {
+           "name": "Principles Of Ai",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML207",
+            "credits": 3
+         }, 
+          {
+           "name": "Probability , Statistics And Linear Algebra",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML209",
+            "credits": 4
+         },  {
+           "name": "Universal Human Values-II",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML211",
+            "credits": 3
+         }, 
+          {
+           "name": "Critical Reasoning and Systems Thinking",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML213",
+            "credits": 2
+         }, 
+          {
+           "name": "Selected readings*",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML215",
+            "credits": 1
+         },
+       ] 
       }
-    },
+
+    },    
     "AIDS": {
       "name": "Artificial Intelligence & Data Science",
       "semesters": {
