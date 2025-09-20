@@ -116,13 +116,93 @@
             "credits": 2
          }, 
           {
-           "name": "Selected readings*",
+           "name": "Selected Readings",
             "faculty": "",
             "icon": "",
             "code": "AIML215",
             "credits": 1
          },
        ] 
+        "4":[
+          { "name": "Object Oriented Programming",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML202",
+            "credits": 3
+            
+          },
+          { "name": "Database Management Systems",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML204",
+            "credits": 3 
+          },
+          {
+           "name": "Software Engineering",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML206",
+            "credits": 3
+          },
+          {
+            "name": "Computer Networks and Internet Protocol",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML208",
+            "credits": 3
+          },
+           {
+            "name": "Fundamentals Of Machine Learning",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML210",
+            "credits": 3
+          },
+           {
+            "name": "Fundaments Of Machine Learning",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML212",
+            "credits": 3
+          },
+          {
+            "name": "Effective Technical Writing*",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML214",
+            "credits": 1
+          },
+           {
+            "name": "Emerging Trends in Technological Industries* ",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML216",
+            "credits": 1
+          },
+        ]
+       "5":[
+         {
+            "name": "Operating Systems",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML301",
+            "credits": 4
+          },
+         {
+            "name": "Design And Analysis Of Algorithms",
+            "faculty": "",
+            "icon": "",
+            "code": "AIML303",
+            "credits": 4
+          },
+
+
+
+
+
+
+         
+       ]
       }
     },    
     "AIDS": {
