@@ -20,6 +20,12 @@ class UserRole(enum.Enum):
     TEACHER = "TEACHER"
     ADMIN = "ADMIN"
 
+class EnrollmentStatus(enum.Enum):
+    """Enum for enrollment status"""
+    PENDING = "PENDING"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
+
 class User(UserMixin, db.Model):
     """User model for storing basic student information and authentication"""
     __tablename__ = 'users'
@@ -53,6 +59,12 @@ class User(UserMixin, db.Model):
     attendance_records = db.relationship('Attendance', backref='student', lazy=True, cascade='all, delete-orphan')
     marks = db.relationship('Marks', backref='student', lazy=True, cascade='all, delete-orphan')
     
+    # Teacher specific relationships
+    assigned_classes = db.relationship('AssignedClass', backref='teacher', lazy=True, cascade='all, delete-orphan')
+
+    # Student specific relationships
+    enrollments = db.relationship('Enrollment', backref='student', lazy=True, cascade='all, delete-orphan')
+
     def set_password(self, password):
         """Hash and set password"""
         self.password_hash = generate_password_hash(password)
@@ -190,9 +202,47 @@ class Subject(db.Model):
     # Relationships
     attendance_records = db.relationship('Attendance', backref='subject', lazy=True)
     marks = db.relationship('Marks', backref='subject', lazy=True)
+    assigned_classes = db.relationship('AssignedClass', backref='subject', lazy=True)
     
     def __repr__(self):
         return f'<Subject {self.branch}-{self.code}: {self.name}>'
+
+class AssignedClass(db.Model):
+    """Model for linking a teacher to a subject (Class Assignment)"""
+    __tablename__ = 'assigned_classes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)
+    
+    # Can add things like 'section' (A, B, C) or 'group' here if multiple teachers teach same subject
+    section = db.Column(db.String(10), nullable=True) 
+    
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    enrollments = db.relationship('Enrollment', backref='assigned_class', lazy=True, cascade='all, delete-orphan')
+
+    def __repr__(self):
+        return f'<AssignedClass {self.subject.code} - Teacher: {self.teacher.name}>'
+
+class Enrollment(db.Model):
+    """Model for student enrollment in an assigned class"""
+    __tablename__ = 'enrollments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    class_id = db.Column(db.Integer, db.ForeignKey('assigned_classes.id'), nullable=False)
+    
+    status = db.Column(db.Enum(EnrollmentStatus), default=EnrollmentStatus.PENDING, nullable=False)
+    request_date = db.Column(db.DateTime, default=datetime.utcnow)
+    response_date = db.Column(db.DateTime, nullable=True)
+    
+    class Meta:
+        unique_together = ('student_id', 'class_id')
+
+    def __repr__(self):
+        return f'<Enrollment {self.student.name} -> {self.assigned_class.subject.code}: {self.status.value}>'
 
 class Attendance(db.Model):
     """Model for tracking student attendance per subject"""

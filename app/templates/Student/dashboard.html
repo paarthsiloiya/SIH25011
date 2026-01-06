@@ -18,21 +18,47 @@
             <div class="flex-1">
                 <div class="text-xl font-bold text-darkblue mb-1">{{ subject.name }}</div>
                 <div class="text-sm text-gray-600 mb-1"><span class="font-medium">Faculty:</span> {{ subject.faculty }}</div>
-                <div class="flex items-center gap-4 text-sm">
+
+                <div class="flex items-center gap-4 text-sm mt-2">
                     <span class="text-gray-500">Code: {{ subject.code }}</span>
-                    {% if subject.total_classes > 0 %}
+
+                    {% if subject.enrollment_status == 'APPROVED' %} {% if subject.total_classes > 0 %}
                     <span class="px-2 py-1 rounded-full text-xs font-semibold {% if subject.status == 'good' %}bg-green-100 text-green-700 {% elif subject.status == 'warning' %}bg-orange-100 text-orange-700 {% else %}bg-red-100 text-red-700{% endif %}">
                         {{ subject.attendance_percentage }}% ({{ subject.attended_classes }}/{{ subject.total_classes }})
                     </span>
                     {% else %}
-                    <span class="px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">No Classes Yet</span>
-                    {% endif %}
+                    <span class="px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">No Attendance Data</span>
+                    {% endif %} {% elif subject.enrollment_status == 'PENDING' %}
+                    <span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">Enrollment Pending</span>
+                    {% elif subject.enrollment_status == 'REJECTED' %}
+                    <span class="px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">Enrollment Rejected</span>
+                    {% else %}
+                    <!-- Not Enrolled -->
+                    {% if subject.assigned_classes|length == 0 %}
+                    <span class="px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-400">Not assigned</span>
+                    {% endif %} {% endif %}
                 </div>
             </div>
 
-            <!-- Right Arrow Icon -->
-            <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-skyblue hover:text-white transition-colors cursor-pointer">
-                <i data-feather="chevron-right" class="w-4 h-4"></i>
+            <!-- Action Area -->
+            <div>
+                {% if subject.enrollment_status == 'APPROVED' %}
+                <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-skyblue hover:text-white transition-colors cursor-pointer">
+                    <i data-feather="chevron-right" class="w-4 h-4"></i>
+                </div>
+                {% elif subject.enrollment_status == 'NOT_ENROLLED' or subject.enrollment_status == 'REJECTED' %} {% if subject.assigned_classes|length > 0 %}
+                <div class="flex flex-col gap-2">
+                    {% for cls in subject.assigned_classes %}
+                    <form action="{{ url_for('views.join_class', class_id=cls.id) }}" method="POST">
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1.5 rounded-md transition">Join {% if cls.section %}({{ cls.section }}){% endif %}</button>
+                    </form>
+                    {% endfor %}
+                </div>
+                {% endif %} {% else %}
+                <div class="text-gray-400">
+                    <i data-feather="clock" class="w-5 h-5"></i>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %} {% block title %}Assign Classes{% endblock %} {% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Assign Classes to Teachers</h1>
+        <a href="{{ url_for('views.admin_dashboard') }}" class="text-indigo-600 hover:text-indigo-800 flex items-center"> <i data-feather="arrow-left" class="w-4 h-4 mr-1"></i> Back to Dashboard </a>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <form action="{{ url_for('views.assign_class') }}" method="POST" class="space-y-6">
+            <!-- Teacher Selection -->
+            <div>
+                <label for="teacher_id" class="block text-sm font-medium text-gray-700 mb-1">Select Teacher</label>
+                <select name="teacher_id" id="teacher_id" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2">
+                    <option value="">-- Select a Teacher --</option>
+                    {% for teacher in teachers %}
+                    <option value="{{ teacher.id }}">{{ teacher.name }} ({{ teacher.department or 'No Dept' }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Subject Selection (Multiple) -->
+            <div>
+                <label for="subject_ids" class="block text-sm font-medium text-gray-700 mb-1">Select Subjects (Hold Ctrl/Cmd to select multiple)</label>
+                <div class="h-64 overflow-y-auto border border-gray-300 rounded-md p-2">
+                    {% for branch, subjects in grouped_subjects.items() %}
+                    <div class="mb-2">
+                        <h3 class="font-bold text-gray-900 bg-gray-100 p-1">{{ branch }}</h3>
+                        {% for subject in subjects %}
+                        <div class="flex items-center p-1 hover:bg-gray-50">
+                            <input type="checkbox" name="subject_ids" value="{{ subject.id }}" id="sub_{{ subject.id }}" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
+                            <label for="sub_{{ subject.id }}" class="ml-2 block text-sm text-gray-700"> {{ subject.code }} - {{ subject.name }} (Sem {{ subject.semester }}) </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Select all the subjects this teacher will teach.</p>
+            </div>
+
+            <!-- Optional Section Name -->
+            <div>
+                <label for="section" class="block text-sm font-medium text-gray-700 mb-1">Section (Optional)</label>
+                <input type="text" name="section" id="section" placeholder="e.g. Group A, Section 1" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
+                <p class="text-xs text-gray-500 mt-1">Leave blank if not applicable. Applies to all selected subjects.</p>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 font-medium">Assign Classes</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Existing Assignments List -->
+    <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Current Assignments</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teacher</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Branch/Sem</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for assignment in assignments %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ assignment.teacher.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">{{ assignment.subject.name }}</div>
+                            <div class="text-sm text-gray-500">{{ assignment.subject.code }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ assignment.subject.branch }}</span>
+                            <span class="ml-1 text-xs text-gray-500">Sem {{ assignment.subject.semester }}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <form action="{{ url_for('views.delete_assignment', id=assignment.id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                <button type="submit" class="text-red-600 hover:text-red-900">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        if (typeof feather !== "undefined") {
+            feather.replace();
+        }
+    </script>
+</div>
+{% endblock %}

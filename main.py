@@ -28,4 +28,4 @@ if __name__ == '__main__':
     app.config['SESSION_COOKIE_NAME'] = f'session_{args.port}'
     app.config['REMEMBER_COOKIE_NAME'] = f'remember_token_{args.port}'
     
-    app.run(debug=True, port=args.port)
+    app.run(debug=True, port=args.port, host='0.0.0.0')

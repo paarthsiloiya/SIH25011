@@ -84,14 +84,12 @@ Add the new branch structure to `data/branch_subjects.json`:
         "1": [
           {
             "name": "Programming Fundamentals",
-            "faculty": "Dr. IoT Expert",
             "icon": "https://img.icons8.com/pulsar-line/96/code.png",
             "code": "ES-101",
             "credits": 3
           },
           {
             "name": "Electronics Basics",
-            "faculty": "Prof. Hardware",
             "icon": "https://img.icons8.com/pulsar-line/96/electrical.png",
             "code": "IOT-101",
             "credits": 4
@@ -102,6 +100,8 @@ Add the new branch structure to `data/branch_subjects.json`:
   }
 }
 ```
+
+**Note:** The `faculty` field is no longer used in JSON. Faculty assignments are managed dynamically through the Admin Dashboard.
 
 ## 📚 Adding New Subjects to Existing Branch
 
@@ -117,7 +117,7 @@ Edit `data/branch_subjects.json` and add the subject to the appropriate semester
         "3": [
           {
             "name": "Deep Learning Fundamentals",
-            "faculty": "Dr. Neural Networks",
+
             "icon": "https://img.icons8.com/pastel-glyph/64/intelligent-person.png",
             "code": "DL-301",
             "credits": 4
@@ -276,6 +276,6 @@ python main.py
 2. **Unique Codes**: Each branch-subject combination gets unique database code
 3. **Case Sensitive**: Branch codes are case-sensitive (AIML, not aiml)
 4. **Credits**: Ensure credit values match university requirements
-5. **Faculty Names**: Keep faculty names consistent across subjects
+5. **No Faculty in JSON**: Faculty assignments are now dynamic (via Admin Dashboard), not static.
 
 The system automatically handles all the complexity - you just need to update the JSON file! 🎯

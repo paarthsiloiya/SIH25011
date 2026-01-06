@@ -1,6 +1,20 @@
 # SIH25011
 This repository contains the source code for a web-based Smart Curriculum Activity &amp; Attendance App, developed as a solution for the SIH 2025 problem statement (ID: 25011). The app automates attendance tracking using face recognition and provides personalized task recommendations for students during free periods.
 
+## Features
+- **Admin Dashboard**: 
+  - Manage users, including Adding, Editing, and Viewing.
+  - Assign Classes to Teachers (multiple subjects per teacher).
+- **Teacher Dashboard**: 
+  - View assigned classes and enrollment statistics.
+  - Manage Enrollment Requests from students (Approve/Reject).
+- **Student Dashboard**: 
+  - View Branch-Specific Curriculum.
+  - Request to join classes.
+  - Track attendance and view simplified academic calendar.
+- **Attendance Tracking**: Automated tracking (currently simulates data).
+- **Role-Based Access Control**: Secure routes for Admin, Teacher, and Student.
+
 ## How to Run
 
 1. Check Python version (needs 3.10+):
@@ -112,6 +126,15 @@ If you prefer the Flask development server:
 $env:FLASK_APP = "main.py"
 flask run
 ```
+
+## 🔧 Troubleshooting
+
+### Docker Errors
+**Error:** `open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified`  
+**Solution:** This means **Docker Desktop is not running**. 
+1. Open the "Docker Desktop" application on your Windows machine.
+2. Wait until the status bar in the bottom left of the Docker window turns green or says "Engine running".
+3. Try the command again.
 
 ### Notes
 - If you later add face recognition / ML, update `requirements.txt`.
