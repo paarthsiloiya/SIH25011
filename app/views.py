@@ -4,7 +4,7 @@ from flask_login import login_required, current_user, logout_user
 from .models import db, User, Branch, UserRole, Subject, AssignedClass, Enrollment, EnrollmentStatus
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 views = Blueprint('views', __name__)
 
@@ -538,7 +538,7 @@ def settings():
                 current_user.institution = institution if institution else 'Delhi Technical Campus'
 
             # Update timestamp
-            current_user.updated_at = datetime.utcnow()
+            current_user.updated_at = datetime.now(timezone.utc)
             
             # Save to database
             db.session.commit()
@@ -612,9 +612,6 @@ def delete_account():
         user_name = current_user.name
         user_email = current_user.email
         user_id = current_user.id
-        
-        # Import necessary models for cleanup
-        from . import db
         
         # Clean up related data first (if any exists in your schema)
         # You can add cleanup for attendance records, marks, etc. here
@@ -731,7 +728,7 @@ def edit_user(user_id):
                 if grad_year and grad_year.isdigit():
                     user_to_edit.year_of_admission = int(grad_year) - 4
             
-            user_to_edit.updated_at = datetime.utcnow()
+            user_to_edit.updated_at = datetime.now(timezone.utc)
             db.session.commit()
             flash('User updated successfully', 'success')
             return redirect(url_for('views.admin_dashboard', section='edit'))
@@ -798,11 +795,11 @@ def handle_enrollment(id):
     action = request.form.get('action')
     if action == 'approve':
         enrollment.status = EnrollmentStatus.APPROVED
-        enrollment.response_date = datetime.utcnow()
+        enrollment.response_date = datetime.now(timezone.utc)
         flash('Student enrollment approved.', 'success')
     elif action == 'reject':
         enrollment.status = EnrollmentStatus.REJECTED
-        enrollment.response_date = datetime.utcnow()
+        enrollment.response_date = datetime.now(timezone.utc)
         flash('Student enrollment rejected.', 'info')
         
     db.session.commit()

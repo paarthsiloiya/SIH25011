@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import func
 import enum
@@ -52,8 +52,8 @@ class User(UserMixin, db.Model):
     year_of_admission = db.Column(db.Integer, nullable=True)
     
     # Timestamps
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     
     # Relationships
     attendance_records = db.relationship('Attendance', backref='student', lazy=True, cascade='all, delete-orphan')
@@ -218,7 +218,7 @@ class AssignedClass(db.Model):
     # Can add things like 'section' (A, B, C) or 'group' here if multiple teachers teach same subject
     section = db.Column(db.String(10), nullable=True) 
     
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     
     # Relationships
     enrollments = db.relationship('Enrollment', backref='assigned_class', lazy=True, cascade='all, delete-orphan')
@@ -235,7 +235,7 @@ class Enrollment(db.Model):
     class_id = db.Column(db.Integer, db.ForeignKey('assigned_classes.id'), nullable=False)
     
     status = db.Column(db.Enum(EnrollmentStatus), default=EnrollmentStatus.PENDING, nullable=False)
-    request_date = db.Column(db.DateTime, default=datetime.utcnow)
+    request_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     response_date = db.Column(db.DateTime, nullable=True)
     
     class Meta:
@@ -261,7 +261,7 @@ class Attendance(db.Model):
     
     # Additional information
     remarks = db.Column(db.Text, nullable=True)
-    recorded_at = db.Column(db.DateTime, default=datetime.utcnow)
+    recorded_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     
     def __repr__(self):
         return f'<Attendance {self.student.name} - {self.subject.code} on {self.date}: {self.status}>'
@@ -285,7 +285,7 @@ class Marks(db.Model):
     # Additional information
     assessment_date = db.Column(db.Date, nullable=True)
     remarks = db.Column(db.Text, nullable=True)
-    recorded_at = db.Column(db.DateTime, default=datetime.utcnow)
+    recorded_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     
     @property
     def percentage(self):
@@ -332,7 +332,7 @@ class AttendanceSummary(db.Model):
     classes_missed = db.Column(db.Integer, default=0)
     
     # Calculated fields
-    last_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    last_updated = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     
     # Relationships
     student = db.relationship('User', backref='attendance_summaries')

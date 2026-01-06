@@ -1,8 +1,8 @@
 
 from app import create_app
-from app.models import db, Subject, seed_subjects
+from app.models import db as _db, Subject, seed_subjects
 
-def test_seeding_idempotency(app):
+def test_seeding_idempotency(app, db):
     """Test that seeding subjects is idempotent (can run multiple times without error)."""
     with app.app_context():
         # Count existing subjects
