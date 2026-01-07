@@ -118,8 +118,14 @@
 
     const templateData = getTemplateData();
 
-    // Greeting with dynamic student name
-    function setGreeting() {
+        <!-- Subject-wise Attendance (if you want bars on Dashboard too, ensure this logic runs) -->
+        const progressBars = document.querySelectorAll("[data-percentage]");
+        progressBars.forEach((bar) => {
+             const percentage = parseFloat(bar.getAttribute("data-percentage"));
+             setTimeout(() => {
+                 bar.style.width = percentage + "%";
+             }, 50);
+        });
         const hour = new Date().getHours();
         let greet = "Good Evening";
         if (hour < 12) greet = "Good Morning";

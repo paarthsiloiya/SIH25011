@@ -66,7 +66,7 @@
                     <span>Missed: {{ subject.total_classes - subject.attended_classes }}</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-3">
-                    <div class="h-3 rounded-full {% if subject.status == 'good' %}bg-green-500{% elif subject.status == 'warning' %}bg-orange-500{% else %}bg-red-500{% endif %}" data-percentage="{{ subject.attendance_percentage }}" style="width: 0%"></div>
+                    <div class="h-3 rounded-full {% if subject.status == 'good' %}bg-green-500{% elif subject.status == 'warning' %}bg-orange{% else %}bg-red-500{% endif %}" data-percentage="{{ subject.attendance_percentage }}" style="width: 0%"></div>
                 </div>
                 {% else %}
                 <p class="text-sm text-gray-500">No attendance data available yet.</p>
@@ -165,8 +165,11 @@
         // Set progress bars for subject attendance
         const progressBars = document.querySelectorAll("[data-percentage]");
         progressBars.forEach((bar) => {
-            const percentage = bar.getAttribute("data-percentage");
-            bar.style.width = percentage + "%";
+            const percentage = parseFloat(bar.getAttribute("data-percentage"));
+            // Ensure width is set after a microtask to allow CSS transition if any
+            setTimeout(() => {
+                bar.style.width = percentage + "%";
+            }, 50);
         });
 
         // Attendance Chart

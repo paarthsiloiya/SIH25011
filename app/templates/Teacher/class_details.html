@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block title %}Class Details - {{ assigned_class.subject.name }}{% endblock %} {% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-6 flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-gray-800">{{ assigned_class.subject.name }} ({{ assigned_class.subject.code }})</h1>
+        <a href="{{ url_for('views.teacher_classes') }}" class="text-indigo-600 hover:text-indigo-800 flex items-center"> <i data-feather="arrow-left" class="w-4 h-4 mr-1"></i> Back to Classes </a>
+    </div>
+
+    <div class="bg-indigo-50 rounded-lg p-6 mb-8 border-l-4 border-indigo-500">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <p class="text-sm text-gray-500 font-medium uppercase tracking-wide">Semester / Branch</p>
+                <p class="text-lg font-semibold text-gray-900">{{ assigned_class.subject.branch }} - Sem {{ assigned_class.subject.semester }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500 font-medium uppercase tracking-wide">Section</p>
+                <p class="text-lg font-semibold text-gray-900">{{ assigned_class.section or 'All Sections' }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500 font-medium uppercase tracking-wide">Enrolled Students</p>
+                <p class="text-lg font-semibold text-gray-900">{{ assigned_class.enrollments|selectattr('is_approved')|list|length }}</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Class Management</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Mark Attendance Card -->
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition border border-gray-100">
+            <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                <i data-feather="check-square" class="text-green-600 w-6 h-6"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Mark Attendance</h3>
+            <p class="text-gray-600 text-sm mb-4">Record student attendance for today or past dates.</p>
+            <a href="{{ url_for('views.teacher_mark_attendance', class_id=assigned_class.id) }}" class="block w-full text-center bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"> Start Marking </a>
+        </div>
+
+        <!-- Edit Class Details Card -->
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition border border-gray-100">
+            <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                <i data-feather="edit-3" class="text-blue-600 w-6 h-6"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Edit Class Details</h3>
+            <p class="text-gray-600 text-sm mb-4">Update section information.</p>
+            <a href="{{ url_for('views.teacher_edit_class', class_id=assigned_class.id) }}" class="block w-full text-center bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">Update</a>
+        </div>
+
+        <!-- Download Data Card -->
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition border border-gray-100">
+            <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                <i data-feather="download" class="text-purple-600 w-6 h-6"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Download Reports</h3>
+            <p class="text-gray-600 text-sm mb-4">Export attendance sheets.</p>
+            <a href="{{ url_for('views.teacher_download_report', class_id=assigned_class.id) }}" class="block w-full text-center bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition">Download CSV</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    feather.replace();
+</script>
+{% endblock %}

@@ -240,6 +240,10 @@ class Enrollment(db.Model):
     
     class Meta:
         unique_together = ('student_id', 'class_id')
+        
+    @property
+    def is_approved(self):
+        return self.status == EnrollmentStatus.APPROVED
 
     def __repr__(self):
         return f'<Enrollment {self.student.name} -> {self.assigned_class.subject.code}: {self.status.value}>'

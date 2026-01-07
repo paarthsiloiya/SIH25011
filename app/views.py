@@ -4,6 +4,9 @@ from flask_login import login_required, current_user, logout_user
 from .models import db, User, Branch, UserRole, Subject, AssignedClass, Enrollment, EnrollmentStatus
 import json
 import os
+import string
+import csv
+import io
 from datetime import datetime, timezone
 
 views = Blueprint('views', __name__)
@@ -15,6 +18,24 @@ def no_cache(response):
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
     return response
+
+def generate_acronym(name):
+    """Generate acronym for subject name, excluding common words and punctuation"""
+    # Remove punctuation
+    name_clean = name.translate(str.maketrans('', '', string.punctuation))
+    words = name_clean.split()
+    
+    if len(words) <= 1:
+        return name
+        
+    ignored = {'and', 'or', 'of'}
+    acronym_words = [w for w in words if w.lower() not in ignored]
+    
+    if not acronym_words:
+        return "".join([w[0].upper() for w in words])
+        
+    return "".join([w[0].upper() for w in acronym_words])
+
 
 def load_semester_data():
     """Load branch-specific semester data from JSON file"""
@@ -136,10 +157,14 @@ def student_dashboard():
             else:
                 faculty_name = f"{len(assigned_classes)} Teachers Available"
 
+        # Generate Acronym
+        acronym = generate_acronym(db_subject['name'])
+
         # Create merged subject data
         merged_subject = {
             'id': db_subject['id'],
             'name': db_subject['name'],
+            'acronym': acronym,
             'code': db_subject['code'],
             'faculty': faculty_name,
             'icon': json_subject.get('icon', 'https://img.icons8.com/ios/96/book--v1.png') if json_subject else 'https://img.icons8.com/ios/96/book--v1.png',
@@ -234,7 +259,7 @@ def student_dashboard():
     # Generate chart data from subjects - handle empty data
     if subjects_data:
         attendance_chart_data = {
-            'labels': [subject['name'][:3].upper() for subject in subjects_data],
+            'labels': [generate_acronym(subject['name']) for subject in subjects_data],
             'data': [subject['attendance_percentage'] for subject in subjects_data]
         }
     else:
@@ -392,7 +417,7 @@ def attendance():
     # Generate chart data from subjects
     if subjects_data:
         attendance_chart_data = {
-            'labels': [subject['name'][:3].upper() for subject in subjects_data],
+            'labels': [generate_acronym(subject['name']) for subject in subjects_data],
             'data': [subject['attendance_percentage'] for subject in subjects_data]
         }
     else:
@@ -757,6 +782,154 @@ def teacher_classes():
     
     assigned_classes = AssignedClass.query.filter_by(teacher_id=current_user.id).all()
     return render_template('Teacher/classes.html', assigned_classes=assigned_classes)
+
+@views.route('/teacher/class/<int:class_id>')
+@login_required
+def teacher_class_details(class_id):
+    if current_user.role != UserRole.TEACHER:
+        return redirect(url_for('auth.login'))
+        
+    assigned_class = AssignedClass.query.get_or_404(class_id)
+    if assigned_class.teacher_id != current_user.id:
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('views.teacher_dashboard'))
+        
+    return render_template('Teacher/class_details.html', assigned_class=assigned_class)
+
+@views.route('/teacher/class/<int:class_id>/attendance', methods=['GET', 'POST'])
+@login_required
+def teacher_mark_attendance(class_id):
+    if current_user.role != UserRole.TEACHER:
+        return redirect(url_for('auth.login'))
+        
+    assigned_class = AssignedClass.query.get_or_404(class_id)
+    if assigned_class.teacher_id != current_user.id:
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('views.teacher_dashboard'))
+    
+    if request.method == 'POST':
+        date_str = request.form.get('date')
+        try:
+            date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            flash('Invalid date format', 'error')
+            return redirect(url_for('views.teacher_mark_attendance', class_id=class_id))
+            
+        # Check if attendance already exists for this date
+        from .models import Attendance
+        existing_records = Attendance.query.filter_by(
+            subject_id=assigned_class.subject_id,
+            date=date_obj
+        ).first()
+
+        if existing_records:
+            flash(f'Attendance for {date_str} has already been marked. You cannot modify it here.', 'error')
+            return redirect(url_for('views.teacher_mark_attendance', class_id=class_id))
+            
+        # Get all approved students
+        enrollments = [e for e in assigned_class.enrollments if e.status == EnrollmentStatus.APPROVED]
+        
+        from .models import Attendance
+        
+        count = 0
+        for enrollment in enrollments:
+            student = enrollment.student
+            # Check form data: 'attendance_<student_id>' -> 'on' (present) or missing (absent)
+            is_present = request.form.get(f'attendance_{student.id}') == 'on'
+            status = 'present' if is_present else 'absent'
+            
+            # Check if record exists
+            existing = Attendance.query.filter_by(
+                user_id=student.id,
+                subject_id=assigned_class.subject_id,
+                date=date_obj
+            ).first()
+            
+            if existing:
+                # Prevent overwriting if preventing 'marking again' is the goal
+                # But logic currently loops. If we want to prevent any change for this class/date:
+                # check outside loop.
+                pass 
+            else:
+                new_record = Attendance(
+                    user_id=student.id,
+                    subject_id=assigned_class.subject_id,
+                    date=date_obj,
+                    status=status
+                )
+                db.session.add(new_record)
+            count += 1
+            
+        db.session.commit()
+        flash(f'Attendance marked for {count} students on {date_str}', 'success')
+        return redirect(url_for('views.teacher_class_details', class_id=class_id))
+        
+    # GET
+    # Get approved enrollments sorted by roll number
+    approved_enrollments = [e for e in assigned_class.enrollments if e.status == EnrollmentStatus.APPROVED]
+    # Sort by enrollment number (handle None values safely)
+    approved_enrollments.sort(key=lambda x: x.student.enrollment_number if x.student.enrollment_number else 'z')
+    
+    return render_template('Teacher/mark_attendance.html', assigned_class=assigned_class, enrollments=approved_enrollments, today=datetime.now().date())
+
+@views.route('/teacher/class/<int:class_id>/edit', methods=['GET', 'POST'])
+@login_required
+def teacher_edit_class(class_id):
+    if current_user.role != UserRole.TEACHER:
+        return redirect(url_for('auth.login'))
+        
+    assigned_class = AssignedClass.query.get_or_404(class_id)
+    if assigned_class.teacher_id != current_user.id:
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('views.teacher_dashboard'))
+        
+    if request.method == 'POST':
+        section = request.form.get('section')
+        assigned_class.section = section
+        db.session.commit()
+        flash('Class details updated successfully', 'success')
+        return redirect(url_for('views.teacher_class_details', class_id=class_id))
+        
+    return render_template('Teacher/edit_class.html', assigned_class=assigned_class)
+
+@views.route('/teacher/class/<int:class_id>/download')
+@login_required
+def teacher_download_report(class_id):
+    if current_user.role != UserRole.TEACHER:
+        return redirect(url_for('auth.login'))
+        
+    assigned_class = AssignedClass.query.get_or_404(class_id)
+    if assigned_class.teacher_id != current_user.id:
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('views.teacher_dashboard'))
+        
+    # Generate CSV
+    si = io.StringIO()
+    cw = csv.writer(si)
+    
+    # Header
+    cw.writerow(['Roll Number', 'Name', 'Total Classes', 'Attended', 'Percentage', 'Status'])
+    
+    # Data
+    students = [e.student for e in assigned_class.enrollments if e.status == EnrollmentStatus.APPROVED]
+    # Sort by roll number
+    students.sort(key=lambda x: x.enrollment_number if x.enrollment_number else 'z')
+    
+    for student in students:
+        stats = student.get_attendance_for_subject(assigned_class.subject_id)
+        cw.writerow([
+            student.enrollment_number or 'N/A',
+            student.name,
+            stats['total_classes'],
+            stats['attended_classes'],
+            f"{stats['attendance_percentage']}%",
+            stats['status'].upper()
+        ])
+        
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = f"attachment; filename={assigned_class.subject.code}_Report.csv"
+    output.headers["Content-type"] = "text/csv"
+    return output
 
 @views.route('/teacher/enrollments')
 @login_required
