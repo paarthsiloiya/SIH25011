@@ -132,6 +132,10 @@
         </form>
     </div>
 
+    <script id="teacher-assignments-data" type="application/json">
+        {{ teacher_assignments|default({})|tojson|safe }}
+    </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Initialize Icons
@@ -143,14 +147,23 @@
             const subjectSearch = document.getElementById("subjectSearchInput");
             const branchFilter = document.getElementById("branchFilter");
             const semesterFilter = document.getElementById("semesterFilter");
+            const teacherSelect = document.getElementById("teacher_id");
             const subjectItems = document.querySelectorAll(".subject-item");
             const branchGroups = document.querySelectorAll(".branch-group");
             const noSubjectsMsg = document.getElementById("noSubjectsFound");
+
+            // Pass backend data to JS
+            const teacherAssignments = JSON.parse(document.getElementById("teacher-assignments-data").textContent);
 
             function filterSubjects() {
                 const term = subjectSearch.value.toLowerCase();
                 const selectedBranch = branchFilter.value;
                 const selectedSemester = semesterFilter.value;
+                const selectedTeacherId = parseInt(teacherSelect.value) || 0;
+
+                // Get already assigned subjects for this teacher
+                const assignedSubjectIds = teacherAssignments[selectedTeacherId] || [];
+
                 let hasVisibleSubjects = false;
 
                 // 1. Filter individual subjects
@@ -159,15 +172,25 @@
                     const branch = item.getAttribute("data-branch");
                     const semester = item.getAttribute("data-semester");
 
+                    const checkbox = item.querySelector("input[type='checkbox']");
+                    const subjectId = parseInt(checkbox.value);
+
                     const matchesSearch = text.includes(term);
                     const matchesBranch = !selectedBranch || branch === selectedBranch;
                     const matchesSemester = !selectedSemester || semester === selectedSemester;
 
-                    if (matchesSearch && matchesBranch && matchesSemester) {
+                    // Hide if already assigned to selected teacher
+                    const isAlreadyAssigned = assignedSubjectIds.includes(subjectId);
+
+                    if (matchesSearch && matchesBranch && matchesSemester && !isAlreadyAssigned) {
                         item.classList.remove("hidden");
+                        checkbox.disabled = false;
                         hasVisibleSubjects = true;
                     } else {
                         item.classList.add("hidden");
+                        if (isAlreadyAssigned) {
+                            checkbox.checked = false; // Uncheck hidden ones
+                        }
                     }
                 });
 
@@ -184,6 +207,12 @@
                 // 3. Show no results message
                 if (!hasVisibleSubjects) {
                     noSubjectsMsg.classList.remove("hidden");
+                    // Update message if it's because of teacher filtering
+                    if (selectedTeacherId && !term && !selectedBranch && !selectedSemester) {
+                        noSubjectsMsg.textContent = "All available subjects are already assigned to this teacher.";
+                    } else {
+                        noSubjectsMsg.textContent = "No subjects match your filters";
+                    }
                 } else {
                     noSubjectsMsg.classList.add("hidden");
                 }
@@ -192,6 +221,7 @@
             subjectSearch.addEventListener("input", filterSubjects);
             branchFilter.addEventListener("change", filterSubjects);
             semesterFilter.addEventListener("change", filterSubjects);
+            teacherSelect.addEventListener("change", filterSubjects);
 
             // --- Assignment Search Logic ---
             const assignmentSearch = document.getElementById("assignmentSearchInput");

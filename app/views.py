@@ -315,12 +315,26 @@ def curriculum():
                 json_subject = js
                 break
         
+        # Try to find assigned faculty from database
+        # This fixes the "faculty name not updating" issue by preferring DB data over JSON
+        assigned_classes_list = AssignedClass.query.filter_by(subject_id=db_subject['id']).all()
+        
+        faculty_name = "Not Assigned"
+        if assigned_classes_list:
+            # If multiple teachers, join their names. 
+            # In a real scenario, we might want to filter by the student's specific section.
+            teachers = [ac.teacher.name for ac in assigned_classes_list]
+            faculty_name = ", ".join(teachers)
+        elif json_subject and json_subject.get('faculty'):
+             # Fallback to JSON if no DB assignment (legacy support)
+             faculty_name = json_subject.get('faculty')
+             
         # Create merged subject data
         merged_subject = {
             'id': db_subject['id'],
             'name': db_subject['name'],
             'code': db_subject['code'],
-            'faculty': json_subject.get('faculty', 'Faculty Name') if json_subject else 'Faculty Name',
+            'faculty': faculty_name,
             'icon': json_subject.get('icon', 'https://img.icons8.com/ios/96/book--v1.png') if json_subject else 'https://img.icons8.com/ios/96/book--v1.png',
         }
         subjects_data.append(merged_subject)
@@ -764,6 +778,55 @@ def edit_user(user_id):
             
     return render_template('Admin/edit_user.html', user=user_to_edit)
 
+@views.route('/admin/reset_password/<int:user_id>', methods=['POST'])
+@login_required
+def reset_user_password(user_id):
+    if current_user.role != UserRole.ADMIN:
+        flash('Access denied.', 'error')
+        return redirect(url_for('auth.login'))
+
+    user_to_reset = User.query.get_or_404(user_id)
+    new_password = request.form.get('new_password')
+    
+    if not new_password or not new_password.strip():
+        flash('Password cannot be empty.', 'error')
+        return redirect(url_for('views.edit_user', user_id=user_id))
+
+    try:
+        user_to_reset.set_password(new_password.strip())
+        db.session.commit()
+        flash(f'Password for {user_to_reset.name} reset successfully.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error resetting password: {str(e)}', 'error')
+
+    return redirect(url_for('views.edit_user', user_id=user_id))
+
+@views.route('/admin/delete_user/<int:user_id>', methods=['POST'])
+@login_required
+def delete_user(user_id):
+    if current_user.role != UserRole.ADMIN:
+        flash('Access denied.', 'error')
+        return redirect(url_for('auth.login'))
+    
+    user_to_delete = User.query.get_or_404(user_id)
+    
+    if user_to_delete.id == current_user.id:
+        flash('You cannot delete your own account.', 'error')
+        return redirect(url_for('views.edit_user', user_id=user_id))
+
+    try:
+        name = user_to_delete.name
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        flash(f'User {name} deleted successfully.', 'success')
+        return redirect(url_for('views.admin_dashboard', section='edit'))
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting user: {str(e)}', 'error')
+        return redirect(url_for('views.edit_user', user_id=user_id))
+
+
 @views.route('/teacher/dashboard')
 @login_required
 def teacher_dashboard():
@@ -771,7 +834,30 @@ def teacher_dashboard():
         flash('Access denied.', 'error')
         return redirect(url_for('auth.login'))
     
-    return render_template('Teacher/dashboard.html')
+    # Calculate statistics for dashboard
+    teacher_classes = AssignedClass.query.filter_by(teacher_id=current_user.id).all()
+    class_ids = [c.id for c in teacher_classes]
+    
+    stats = {
+        'total_classes': len(teacher_classes),
+        'total_students': 0,
+        'pending_requests': 0
+    }
+    
+    if class_ids:
+        # Count unique approved students
+        stats['total_students'] = Enrollment.query.filter(
+            Enrollment.class_id.in_(class_ids),
+            Enrollment.status == EnrollmentStatus.APPROVED
+        ).with_entities(Enrollment.student_id).distinct().count()
+        
+        # Count pending enrollments
+        stats['pending_requests'] = Enrollment.query.filter(
+            Enrollment.class_id.in_(class_ids),
+            Enrollment.status == EnrollmentStatus.PENDING
+        ).count()
+    
+    return render_template('Teacher/dashboard.html', stats=stats)
 
 @views.route('/teacher/classes')
 @login_required
@@ -1048,7 +1134,21 @@ def assign_class():
             grouped_subjects[key] = []
         grouped_subjects[key].append(sub)
 
-    return render_template('Admin/assign_class.html', teachers=teachers, grouped_subjects=grouped_subjects, assignments=assignments)
+    # Pre-calculate assigned subjects per teacher for frontend filtering
+    # Dict format: { teacher_id: [subject_id_1, subject_id_2, ...] }
+    teacher_assignments = {}
+    assignments_all = AssignedClass.query.all()
+    for assign in assignments_all:
+        if assign.teacher_id not in teacher_assignments:
+            teacher_assignments[assign.teacher_id] = []
+        teacher_assignments[assign.teacher_id].append(assign.subject_id)
+
+    return render_template('Admin/assign_class.html', 
+        teachers=teachers, 
+        grouped_subjects=grouped_subjects, 
+        assignments=assignments,
+        teacher_assignments=teacher_assignments
+    )
 
 
 @views.route('/admin/delete_assignment/<int:id>', methods=['POST'])

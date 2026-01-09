@@ -367,7 +367,14 @@ def reset_database():
     create_tables()
 
 def seed_subjects():
-    """Seed the database with branch-specific subjects from JSON data"""
+    """
+    Seed and sync the database with branch-specific subjects from JSON data.
+    This function:
+    1. Creates new subjects found in JSON.
+    2. Updates existing subjects if JSON data changed (matching by Code OR Name+Branch).
+    3. Removes subjects from DB that are no longer in the JSON (orphans).
+    4. Aggressively cleans up dependent data (Attendance, etc.) for orphans.
+    """
     import json
     import os
     
@@ -387,6 +394,8 @@ def seed_subjects():
         return
     
     subjects_created = 0
+    subjects_updated = 0
+    active_subject_ids = set()
     
     # Iterate through branches and their semesters
     for branch_code, branch_data in data.get('branches', {}).items():
@@ -406,53 +415,112 @@ def seed_subjects():
                 if subject_data['code'] in ['Test', '1', '']:
                     continue
                 
-                # Create a unique code that includes branch
-                unique_code = f"{branch_code}-{subject_data['code']}"
+                # Desired new state
+                tgt_code = f"{branch_code}-{subject_data['code']}"
+                tgt_name = subject_data['name']
+                tgt_credits = subject_data.get('credits', -1)
                 
-                # Check if subject already exists
-                try:
-                    existing = Subject.query.filter_by(code=unique_code).first()
-                    if not existing:
-                        new_subject = Subject(
-                            name=subject_data['name'],
-                            code=unique_code,
-                            semester=semester_int,
-                            credits=subject_data.get('credits', -1),  # Default to -1 credits if not specified
-                            branch=branch_code
-                        )
-                        db.session.add(new_subject)
-                        subjects_created += 1
-                except Exception:
-                    continue
+                # Strategy:
+                # 1. Try to find by EXACT Code (Preferred)
+                existing = Subject.query.filter_by(code=tgt_code).first()
+                
+                # 2. If not found, try to find by Name + Branch + Semester (Rename/Recode Case)
+                if not existing:
+                    existing = Subject.query.filter_by(
+                        name=tgt_name,
+                        branch=branch_code, 
+                        semester=semester_int
+                    ).first()
+                
+                if not existing:
+                    # Create New
+                    new_subject = Subject(
+                        name=tgt_name,
+                        code=tgt_code,
+                        semester=semester_int,
+                        credits=tgt_credits,
+                        branch=branch_code
+                    )
+                    db.session.add(new_subject)
+                    db.session.flush() # Get ID
+                    active_subject_ids.add(new_subject.id)
+                    subjects_created += 1
+                else:
+                    # Update Existing
+                    active_subject_ids.add(existing.id)
+                    changed = False
+                    
+                    if existing.code != tgt_code: # Critical: Updating Code
+                        existing.code = tgt_code
+                        changed = True
+                    if existing.name != tgt_name:
+                        existing.name = tgt_name
+                        changed = True
+                    if existing.semester != semester_int:
+                        existing.semester = semester_int
+                        changed = True
+                    if existing.credits != tgt_credits:
+                        existing.credits = tgt_credits
+                        changed = True
+                    if existing.branch != branch_code:
+                        existing.branch = branch_code
+                        changed = True
+                        
+                    if changed:
+                        print(f"DEBUG: Updating {existing.code}")
+                        subjects_updated += 1
     
+    # Common subjects block removed to prevent duplicates with branch-specific subjects
+    # The JSON file should now contain all subjects for all branches.
+    
+    # Commit additions and updates
     try:
         db.session.commit()
-    except Exception:
+    except Exception as e:
+        print(f"Commit Error: {e}")
         db.session.rollback()
-    
-    # Also create some common subjects that all branches share
-    common_subjects = [
-        {'name': 'Human Values and Ethics', 'code': 'COMMON-UHV', 'semester': 1, 'credits': 2},
-        {'name': 'Indian Constitution', 'code': 'COMMON-IC', 'semester': 1, 'credits': 2},
-    ]
-    
-    for subject_data in common_subjects:
-        try:
-            existing = Subject.query.filter_by(code=subject_data['code']).first()
-            if not existing:
-                new_subject = Subject(
-                    name=subject_data['name'],
-                    code=subject_data['code'],
-                    semester=subject_data['semester'],
-                    credits=subject_data['credits'],
-                    branch='COMMON'
-                )
-                db.session.add(new_subject)
-                subjects_created += 1
-        except Exception:
-            continue
+        return
+
+    # Cleanup Orphaned Subjects
+    # If the user previously had duplicate subjects due to code changes, 
+    # the above logic might have "claimed" one of them (the one matching name/branch).
+    # The "other" one (the one with old code that didn't match name/branch or was skipped)
+    # will not be in active_subject_ids.
     
     try:
-        db.session.commit()
-    except Exception:
+        all_subjects = Subject.query.all()
+        subjects_deleted = 0
+        
+        for subj in all_subjects:
+            if subj.id not in active_subject_ids:
+                print(f"🗑️ Deleting orphan subject: {subj.code} ({subj.name})")
+                try:
+                    # 1. Delete Assigned Classes (and cascade Enrollments)
+                    AssignedClass.query.filter_by(subject_id=subj.id).delete()
+                    
+                    # 2. Delete Attendance Summary
+                    AttendanceSummary.query.filter_by(subject_id=subj.id).delete()
+                    
+                    # 3. Delete Attendance
+                    Attendance.query.filter_by(subject_id=subj.id).delete()
+                    
+                    # 4. Delete Marks
+                    Marks.query.filter_by(subject_id=subj.id).delete()
+                    
+                    # 5. Delete the Subject itself
+                    db.session.delete(subj)
+                    
+                    # Commit per deletion to keep transaction log small and safe
+                    db.session.commit()
+                    subjects_deleted += 1
+                except Exception as e:
+                    print(f"❌ Failed to delete orphan {subj.code}: {e}")
+                    db.session.rollback()
+                    continue
+        
+        if subjects_deleted > 0 or subjects_updated > 0:
+            print(f"Subject Sync: Created {subjects_created}, Updated {subjects_updated}, Deleted {subjects_deleted}")
+            
+    except Exception as e:
+        print(f"❌ Sync Error: {e}")
         db.session.rollback()

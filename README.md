@@ -83,37 +83,12 @@ This repository contains the source code for a web-based Smart Curriculum Activi
 	```
 
 ## Utility Scripts
-The `utility/` folder contains helpful scripts for managing the application:
 
-- **Create Admin User:**
-  ```powershell
-  python utility/create_admin.py
-  ```
-  Creates an admin account (`admin@example.com` / `admin123`).
-
-- **Add Sample Data:**
-  ```powershell
-  python utility/add_sample_data.py
-  ```
-  Populates the database with sample attendance and marks.
-
-- **Create Test Accounts:**
-  ```powershell
-  python utility/create_test_accounts.py
-  ```
-  Generates test student accounts for all semesters.
-
-- **Reset Database:**
-  ```powershell
-  python utility/reset_db.py
-  ```
-  **Warning:** Wipes the database and reseeds initial data.
+For a complete guide on using the utility scripts (creating admins, resetting DB, generating sample data), please refer to the [Utility Guide](utility/UTILITY_GUIDE.md).
 
 ## Testing
-Run the test suite using pytest:
-```powershell
-pytest
-```
+
+For instructions on running the test suite, please refer to the [Testing Guide](tests/TESTING_GUIDE.md).
 
 ### Quick one-liner (initial setup)
 ```powershell
