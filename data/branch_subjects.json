@@ -1305,207 +1305,322 @@
                 ],
                 "3": [
                     {
-                        "name": "Data Structures",
-                        "icon": "https://img.icons8.com/ios/100/add-node.png",
-                        "code": "AC-209",
-                        "credits": 4
-                    },
-                    {
-                        "name": "Digital Logic And Computer Design",
-                        "icon": "https://img.icons8.com/pulsar-line/96/binary-file.png",
-                        "code": "ECC-207",
-                        "credits": 4
-                    },
-                    {
                         "name": "Computational Methods",
-                        "icon": "https://img.icons8.com/pulsar-line/48/mind-map.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/rubiks-cube.png",
                         "code": "ES-201",
                         "credits": 4
                     },
                     {
                         "name": "Indian Knowledge System*",
-                        "icon": "https://img.icons8.com/pulsar-line/48/knowledge-sharing.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-203",
                         "credits": 2
                     },
                     {
                         "name": "Discrete Mathematics",
-                        "icon": "https://img.icons8.com/pulsar-line/48/approximately-equal-2.png",
-                        "code": "AC-205",
+                        "icon": "https://img.icons8.com/pulsar-line/512/empty-set.png",
+                        "code": "CIC-205",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Digital Logic And Computer Design",
+                        "icon": "https://img.icons8.com/pulsar-line/512/lcd.png",
+                        "code": "ECC-207",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Data Structures",
+                        "icon": "https://img.icons8.com/pulsar-line/512/flow-chart.png",
+                        "code": "CIC-209",
                         "credits": 4
                     },
                     {
                         "name": "Object Oriented Programming Using C++",
-                        "icon": "https://img.icons8.com/pulsar-line/48/code.png",
-                        "code": "AC-211",
+                        "icon": "https://img.icons8.com/pulsar-line/512/curly-brackets.png",
+                        "code": "CIC-211",
                         "credits": 4
+                    },
+                    {
+                        "name": "Computational Methods Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/rubiks-cube.png",
+                        "code": "ES-251",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Digital Logic And Computer Design Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/circuit.png",
+                        "code": "ECC-253",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Data Structures Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/connected-no-data.png",
+                        "code": "CIC-255",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Object Oriented Programming Using C++ Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/network.png",
+                        "code": "CIC-257",
+                        "credits": 1
                     }
                 ],
                 "4": [
                     {
                         "name": "Probability , Statistics And Linear Programming",
-                        "icon": "https://img.icons8.com/pulsar-line/48/math.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/normal-distribution-histogram.png",
                         "code": "BS-202",
                         "credits": 4
                     },
                     {
                         "name": "Technical Writing*",
-                        "icon": "https://img.icons8.com/pulsar-line/48/inscription.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/inscription.png",
                         "code": "HS-204",
                         "credits": 2
                     },
                     {
                         "name": "Theory Of Computation",
-                        "icon": "https://img.icons8.com/pulsar-line/48/book-philosophy.png",
-                        "code": "AC-206",
+                        "icon": "https://img.icons8.com/pulsar-line/512/informatics-book.png",
+                        "code": "CIC-206",
                         "credits": 4
                     },
                     {
-                        "name": "Operating Systems",
-                        "icon": "https://img.icons8.com/pulsar-line/48/pc-on-desk.png",
-                        "code": "AC-214",
+                        "name": "Circuit and Systems",
+                        "icon": "https://img.icons8.com/pulsar-line/512/motherboard.png",
+                        "code": "EEC-208",
                         "credits": 4
                     },
                     {
-                        "name": "Object Oriented Programming Using C++",
-                        "icon": "https://img.icons8.com/pulsar-line/48/code.png",
-                        "code": "AC-216",
+                        "name": "Database Management Systems",
+                        "icon": "https://img.icons8.com/pulsar-line/512/database.png",
+                        "code": "CIC-210",
                         "credits": 4
                     },
                     {
-                        "name": "Functional And Logic Programming",
+                        "name": "Programming In Java",
                         "icon": "https://img.icons8.com/pulsar-line/48/rubiks-cube.png",
-                        "code": "AC-218",
+                        "code": "CIC-212",
                         "credits": 4
+                    },
+                    {
+                        "name": "Probability , Statistics And Linear Algebra Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/normal-distribution-histogram.png",
+                        "code": "BS-252",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Circuit and Systems Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/integrated-circuit.png",
+                        "code": "EEC-254",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Database Management Systems Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/database.png",
+                        "code": "CIC-256",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Programming In Java Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/curly-brackets.png",
+                        "code": "CIC-258",
+                        "credits": 1
                     }
                 ],
                 "5": [
                     {
                         "name": "Economics Of Engineers",
-                        "icon": "https://img.icons8.com/pulsar-line/48/e-learning.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/economic-improvement.png",
                         "code": "HS-301",
                         "credits": 2
                     },
                     {
                         "name": "Compiler Design",
-                        "icon": "https://img.icons8.com/pulsar-line/48/developer-mode.png",
-                        "code": "AC-303",
+                        "icon": "https://img.icons8.com/pulsar-line/512/online-coding.png",
+                        "code": "CIC-303",
                         "credits": 3
+                    },
+                    {
+                        "name": "Operating Systems",
+                        "icon": "https://img.icons8.com/pulsar-line/512/operating-system.png",
+                        "code": "CIC-305",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Computer Networks",
+                        "icon": "https://img.icons8.com/pulsar-line/512/network.png",
+                        "code": "CIC-307",
+                        "credits": 4
                     },
                     {
                         "name": "Software Engineering",
-                        "icon": "https://img.icons8.com/pulsar-line/48/my-computer.png",
-                        "code": "AC-309",
+                        "icon": "https://img.icons8.com/pulsar-line/512/imac-settings.png",
+                        "code": "CIC-309",
                         "credits": 3
                     },
                     {
-                        "name": "Design And Analysis Of Algorithms",
-                        "icon": "https://img.icons8.com/pulsar-line/48/pen-2.png",
-                        "code": "AC-311",
+                        "name": "Design and Analysis of Algorithms",
+                        "icon": "https://img.icons8.com/pulsar-line/512/serial-tasks.png",
+                        "code": "CIC-311",
                         "credits": 4
                     },
                     {
-                        "name": "Database Management Systems",
-                        "icon": "https://img.icons8.com/pulsar-line/48/bar-chart.png",
-                        "code": "AC-315",
-                        "credits": 4
+                        "name": "Compiler Design Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/online-coding.png",
+                        "code": "CIC-351",
+                        "credits": 1
                     },
                     {
-                        "name": "Programming In Java",
-                        "icon": "https://img.icons8.com/pulsar-line/48/java-files.png",
-                        "code": "AC-317",
-                        "credits": 4
+                        "name": "Operating Systems Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/operating-system.png",
+                        "code": "CIC-353",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Computer Networks Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/network.png",
+                        "code": "CIC-355",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Software Engineering Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/imac-settings.png",
+                        "code": "CIC-357",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Digital and Analysis of Algorithm Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/serial-tasks.png",
+                        "code": "CIC-359",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Summer Training Report - 1*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
+                        "code": "ES-361",
+                        "credits": 1
                     }
                 ],
                 "6": [
                     {
-                        "name": "Principles Of Management For Engineers ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/mission-of-a-company.png",
+                        "name": "Principles Of Management For Engineers",
+                        "icon": "https://img.icons8.com/pulsar-line/512/management.png",
                         "code": "MS-302",
                         "credits": 3
                     },
                     {
-                        "name": "Object Oriented Programming Using C++",
-                        "icon": "https://img.icons8.com/pulsar-line/48/code.png",
-                        "code": "AC-211",
-                        "credits": 4
-                    },
-                    {
-                        "name": "Universal Human Values-II",
-                        "icon": "https://img.icons8.com/pulsar-line/48/learn-information.png",
+                        "name": "Universal Human Values*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-304",
                         "credits": 1
                     },
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c1) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-1)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c2) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-2)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c3) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-3)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 1/ OAE \u00e2\u20ac\u201c 1) ",
-                        "icon": "",
-                        "code": "1",
+                        "name": "Emerging Area/Open Area Elective Paper (EAE-1/OAE-1)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 2/ OAE \u00e2\u20ac\u201c 2) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Emerging Area/Open Area Elective Paper (EAE-2/OAE-2)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     }
                 ],
                 "7": [
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c 4) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
-                        "credits": 4
-                    },
-                    {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c 5) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
-                        "credits": 4
-                    },
-                    {
-                        "name": "Principles of Entrepreneurship Mindset ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/make-decision.png",
-                        "code": "MS-401",
+                        "name": "Principles of Entrepreneurship Mindset",
+                        "icon": "https://img.icons8.com/pulsar-line/512/make-decision.png",
+                        "code": "AIML-401",
                         "credits": 2
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 3 / OAE \u00e2\u20ac\u201c 3) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-4)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 4 / OAE \u00e2\u20ac\u201c 4) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-5)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 5 / OAE \u00e2\u20ac\u201c 5) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Emerging Area / Open Area Elective Paper(EAE-3 / OAE-3) ",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
+                    },
+                    {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE-4 / OAE-4) ",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE-5 / OAE-5)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Minor Project*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
+                        "code": "ES-451",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Summer Training Report - 2*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/training.png",
+                        "code": "ES-453",
+                        "credits": 2
                     }
                 ],
-                "8": []
+                "8": [
+                    {
+                        "name": "Major Project - Dissertation and Viva-Voce",
+                        "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
+                        "code": "ES-452",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Project Progress Evaluation*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/health-graph.png",
+                        "code": "ES-454",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Internship Report and Viva-Voce",
+                        "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
+                        "code": "ES-456",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Internship Progress Evaluation*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/health-graph.png",
+                        "code": "ES-458",
+                        "credits": 3
+                    }
+                ]
             }
         },
         "CSE": {
@@ -1715,201 +1830,322 @@
                 ],
                 "3": [
                     {
-                        "name": "Data Structures",
-                        "icon": "https://img.icons8.com/ios/100/add-node.png",
-                        "code": "AC-209",
-                        "credits": 4
-                    },
-                    {
-                        "name": "Digital Logic And Computer Design",
-                        "icon": "https://img.icons8.com/pulsar-line/96/binary-file.png",
-                        "code": "ECC-207",
-                        "credits": 4
-                    },
-                    {
                         "name": "Computational Methods",
-                        "icon": "https://img.icons8.com/pulsar-line/48/mind-map.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/rubiks-cube.png",
                         "code": "ES-201",
                         "credits": 4
                     },
                     {
                         "name": "Indian Knowledge System*",
-                        "icon": "https://img.icons8.com/pulsar-line/48/knowledge-sharing.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-203",
                         "credits": 2
                     },
                     {
                         "name": "Discrete Mathematics",
-                        "icon": "https://img.icons8.com/pulsar-line/48/approximately-equal-2.png",
-                        "code": "AC-205",
+                        "icon": "https://img.icons8.com/pulsar-line/512/empty-set.png",
+                        "code": "CIC-205",
                         "credits": 4
+                    },
+                    {
+                        "name": "Digital Logic And Computer Design",
+                        "icon": "https://img.icons8.com/pulsar-line/512/lcd.png",
+                        "code": "ECC-207",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Data Structures",
+                        "icon": "https://img.icons8.com/pulsar-line/512/flow-chart.png",
+                        "code": "CIC-209",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Object Oriented Programming Using C++",
+                        "icon": "https://img.icons8.com/pulsar-line/512/curly-brackets.png",
+                        "code": "CIC-211",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Computational Methods Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/rubiks-cube.png",
+                        "code": "ES-251",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Digital Logic And Computer Design Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/circuit.png",
+                        "code": "ECC-253",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Data Structures Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/connected-no-data.png",
+                        "code": "CIC-255",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Object Oriented Programming Using C++ Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/network.png",
+                        "code": "CIC-257",
+                        "credits": 1
                     }
                 ],
                 "4": [
                     {
                         "name": "Probability , Statistics And Linear Programming",
-                        "icon": "https://img.icons8.com/pulsar-line/48/math.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/normal-distribution-histogram.png",
                         "code": "BS-202",
                         "credits": 4
                     },
                     {
                         "name": "Technical Writing*",
-                        "icon": "https://img.icons8.com/pulsar-line/48/inscription.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/inscription.png",
                         "code": "HS-204",
                         "credits": 2
                     },
                     {
                         "name": "Theory Of Computation",
-                        "icon": "https://img.icons8.com/pulsar-line/48/book-philosophy.png",
-                        "code": "AC-206",
+                        "icon": "https://img.icons8.com/pulsar-line/512/informatics-book.png",
+                        "code": "CIC-206",
                         "credits": 4
                     },
                     {
-                        "name": "Operating Systems",
-                        "icon": "https://img.icons8.com/pulsar-line/48/pc-on-desk.png",
-                        "code": "AC-214",
+                        "name": "Circuit and Systems",
+                        "icon": "https://img.icons8.com/pulsar-line/512/motherboard.png",
+                        "code": "EEC-208",
                         "credits": 4
                     },
                     {
-                        "name": "Object Oriented Programming Using C++",
-                        "icon": "https://img.icons8.com/pulsar-line/48/code.png",
-                        "code": "AC-216",
+                        "name": "Database Management Systems",
+                        "icon": "https://img.icons8.com/pulsar-line/512/database.png",
+                        "code": "CIC-210",
                         "credits": 4
                     },
                     {
-                        "name": "Functional And Logic Programming",
+                        "name": "Programming In Java",
                         "icon": "https://img.icons8.com/pulsar-line/48/rubiks-cube.png",
-                        "code": "AC-218",
+                        "code": "CIC-212",
                         "credits": 4
+                    },
+                    {
+                        "name": "Probability , Statistics And Linear Algebra Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/normal-distribution-histogram.png",
+                        "code": "BS-252",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Circuit and Systems Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/integrated-circuit.png",
+                        "code": "EEC-254",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Database Management Systems Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/database.png",
+                        "code": "CIC-256",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Programming In Java Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/curly-brackets.png",
+                        "code": "CIC-258",
+                        "credits": 1
                     }
                 ],
                 "5": [
                     {
                         "name": "Economics Of Engineers",
-                        "icon": "https://img.icons8.com/pulsar-line/48/e-learning.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/economic-improvement.png",
                         "code": "HS-301",
                         "credits": 2
                     },
                     {
                         "name": "Compiler Design",
-                        "icon": "https://img.icons8.com/pulsar-line/48/developer-mode.png",
-                        "code": "AC-303",
+                        "icon": "https://img.icons8.com/pulsar-line/512/online-coding.png",
+                        "code": "CIC-303",
                         "credits": 3
+                    },
+                    {
+                        "name": "Operating Systems",
+                        "icon": "https://img.icons8.com/pulsar-line/512/operating-system.png",
+                        "code": "CIC-305",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Computer Networks",
+                        "icon": "https://img.icons8.com/pulsar-line/512/network.png",
+                        "code": "CIC-307",
+                        "credits": 4
                     },
                     {
                         "name": "Software Engineering",
-                        "icon": "https://img.icons8.com/pulsar-line/48/my-computer.png",
-                        "code": "AC-309",
+                        "icon": "https://img.icons8.com/pulsar-line/512/imac-settings.png",
+                        "code": "CIC-309",
                         "credits": 3
                     },
                     {
-                        "name": "Design And Analysis Of Algorithms",
-                        "icon": "https://img.icons8.com/pulsar-line/48/pen-2.png",
-                        "code": "AC-311",
+                        "name": "Design and Analysis of Algorithms",
+                        "icon": "https://img.icons8.com/pulsar-line/512/serial-tasks.png",
+                        "code": "CIC-311",
                         "credits": 4
                     },
                     {
-                        "name": "Database Management Systems",
-                        "icon": "https://img.icons8.com/pulsar-line/48/bar-chart.png",
-                        "code": "AC-315",
-                        "credits": 4
+                        "name": "Compiler Design Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/online-coding.png",
+                        "code": "CIC-351",
+                        "credits": 1
                     },
                     {
-                        "name": "Programming In Java",
-                        "icon": "https://img.icons8.com/pulsar-line/48/java-files.png",
-                        "code": "AC-317",
-                        "credits": 4
+                        "name": "Operating Systems Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/operating-system.png",
+                        "code": "CIC-353",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Computer Networks Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/network.png",
+                        "code": "CIC-355",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Software Engineering Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/imac-settings.png",
+                        "code": "CIC-357",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Digital and Analysis of Algorithm Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/serial-tasks.png",
+                        "code": "CIC-359",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Summer Training Report - 1*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
+                        "code": "ES-361",
+                        "credits": 1
                     }
                 ],
                 "6": [
                     {
-                        "name": "Principles Of Management For Engineers ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/mission-of-a-company.png",
+                        "name": "Principles Of Management For Engineers",
+                        "icon": "https://img.icons8.com/pulsar-line/512/management.png",
                         "code": "MS-302",
                         "credits": 3
                     },
                     {
-                        "name": "Object Oriented Programming Using C++",
-                        "icon": "https://img.icons8.com/pulsar-line/48/code.png",
-                        "code": "AC-211",
-                        "credits": 4
-                    },
-                    {
-                        "name": "Universal Human Values-II",
-                        "icon": "https://img.icons8.com/pulsar-line/48/learn-information.png",
+                        "name": "Universal Human Values*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-304",
                         "credits": 1
                     },
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c1) ",
-                        "icon": "",
-                        "code": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
+                        "name": "Programme Core Elective Paper (PCE-1)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c2) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-2)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c3) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-3)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 1/ OAE \u00e2\u20ac\u201c 1) ",
-                        "icon": "",
-                        "code": "1",
+                        "name": "Emerging Area/Open Area Elective Paper (EAE-1/OAE-1)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 2/ OAE \u00e2\u20ac\u201c 2) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Emerging Area/Open Area Elective Paper (EAE-2/OAE-2)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     }
                 ],
                 "7": [
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c 4) ",
-                        "icon": "",
-                        "code": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "credits": 4
-                    },
-                    {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c 5) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
-                        "credits": 4
-                    },
-                    {
-                        "name": "Principles of Entrepreneurship Mindset ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/make-decision.png",
-                        "code": "MS-401",
+                        "name": "Principles of Entrepreneurship Mindset",
+                        "icon": "https://img.icons8.com/pulsar-line/512/make-decision.png",
+                        "code": "AIML-401",
                         "credits": 2
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 3 / OAE \u00e2\u20ac\u201c 3) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-4)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 4 / OAE \u00e2\u20ac\u201c 4) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-5)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 5 / OAE \u00e2\u20ac\u201c 5) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Emerging Area / Open Area Elective Paper(EAE-3 / OAE-3) ",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
+                    },
+                    {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE-4 / OAE-4) ",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE-5 / OAE-5)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Minor Project*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
+                        "code": "ES-451",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Summer Training Report - 2*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/training.png",
+                        "code": "ES-453",
+                        "credits": 2
                     }
                 ],
-                "8": []
+                "8": [
+                    {
+                        "name": "Major Project - Dissertation and Viva-Voce",
+                        "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
+                        "code": "ES-452",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Project Progress Evaluation*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/health-graph.png",
+                        "code": "ES-454",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Internship Report and Viva-Voce",
+                        "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
+                        "code": "ES-456",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Internship Progress Evaluation*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/health-graph.png",
+                        "code": "ES-458",
+                        "credits": 3
+                    }
+                ]
             }
         }
     }
