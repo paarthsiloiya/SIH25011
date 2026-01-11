@@ -9,7 +9,11 @@
             <div class="flex justify-between items-start">
                 <div>
                     <h2 class="text-xl font-bold text-gray-900">{{ assignment.subject.name }}</h2>
-                    <p class="text-indigo-600 font-medium">{{ assignment.subject.code }}</p>
+                    <p class="text-indigo-600 font-medium">
+                        {{ assignment.subject.code }} {% if assignment.subject.is_lab %}
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800 ml-2">Lab</span>
+                        {% endif %}
+                    </p>
                 </div>
                 <div class="bg-indigo-50 p-2 rounded-full">
                     <i data-feather="book" class="w-6 h-6 text-indigo-600"></i>

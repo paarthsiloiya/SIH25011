@@ -10,6 +10,65 @@
         </div>
     </div>
 
+    <!-- Active Class / Attendance Section -->
+    {% if active_class_info %}
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8 overflow-hidden">
+        <div class="px-6 py-6 md:flex md:items-center md:justify-between">
+            <div class="flex-1 min-w-0">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 animate-pulse">
+                        <span class="w-1.5 h-1.5 bg-red-600 rounded-full mr-1.5"></span>
+                        Live Class
+                    </span>
+                    <span class="text-gray-500 text-sm">{{ active_class_info.entry.day }} • {{ active_class_info.entry.start_time.strftime('%I:%M %p') }} - {{ active_class_info.entry.end_time.strftime('%I:%M %p') }}</span>
+                </div>
+
+                <h2 class="text-2xl font-bold text-gray-900 sm:truncate mb-1">
+                    {{ active_class_info.class.subject.name }} {% if active_class_info.class.subject.is_lab %}
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800 ml-2 align-middle">Lab</span>
+                    {% endif %}
+                </h2>
+
+                <div class="flex flex-wrap gap-x-6 gap-y-2 mt-2 text-gray-600">
+                    <div class="flex items-center text-sm">
+                        <i data-feather="map-pin" class="w-4 h-4 mr-2 text-gray-400"></i>
+                        {{ active_class_info.entry.room }}
+                    </div>
+                    <div class="flex items-center text-sm">
+                        <i data-feather="book" class="w-4 h-4 mr-2 text-gray-400"></i>
+                        {{ active_class_info.class.subject.code }}
+                    </div>
+                    <div class="flex items-center text-sm">
+                        <i data-feather="users" class="w-4 h-4 mr-2 text-gray-400"></i>
+                        {{ active_class_info.class.subject.branch }} - Sem {{ active_class_info.class.subject.semester }} ({{ active_class_info.class.section or 'All Sections' }})
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 md:mt-0 md:ml-8 flex-shrink-0">
+                <a
+                    href="{{ url_for('views.teacher_mark_attendance', class_id=active_class_info.class.id) }}"
+                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                    <i data-feather="check-square" class="w-5 h-5 mr-2"></i>
+                    Take Attendance
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Optional: State when no class is active, to inform the teacher -->
+    <div class="bg-white rounded-lg border border-gray-200 p-6 mb-8 shadow-sm flex items-center justify-between">
+        <div>
+            <h3 class="text-lg font-medium text-gray-900">No Active Class</h3>
+            <p class="text-sm text-gray-500 mt-1">You don't have any classes scheduled for right now according to the timetable.</p>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="{{ url_for('views.teacher_schedule') }}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center"> View Schedule <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i> </a>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <!-- Card 1: Total Students -->

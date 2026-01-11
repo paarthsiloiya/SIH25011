@@ -9,37 +9,60 @@
 
 ## 🤖 Automated Testing
 
-The project uses `pytest` for automated unit and integration testing. The test suite covers models, authentication, views, and security.
+The project uses `pytest` for automated unit and integration testing. The test suite has been consolidated into feature-focused modules to maintain organization and ease of use.
 
-### Key Test Files (in `tests/` directory)
+### Test Architecture (in `tests/` directory)
 
-| File | Purpose |
-|------|---------|
-| `test_models.py` | Unit tests for data models (User, Attendance, Grades) |
-| `test_auth.py` | Integration tests for login, logout, and access control |
-| `test_views.py` | General view accessibility and dashboard tests |
-| `test_security.py` | Security verification (RBAC, CSRF) |
-| `test_student_views.py` | Student specific workflows (Curriculum, Join Class) |
-| `test_admin_teacher_views.py` | Admin and Teacher operations |
-| `test_account_management.py` | Account lifecycle tests |
-| `test_timetable_full.py` | Extensive coverage of Timetable Generator (collisions, constraints, parity logic) |
-| `test_timetable_export.py` | Unit and integration tests for Timetable Export (Excel/PDF) |
-| `test_views_coverage.py` | Additional coverage for Timetable views, Teacher schedule rendering, and Student dashboards |
+We have organized the test suite into 6 core "Feature Suites" containing **75 tests** (Coverage: ~80%):
+
+#### 1. `test_auth_models.py` (Foundation & Security)
+*   **Authentication**: Login success/failure, Logout, Session cleanup.
+*   **Models**: User creation, Password hashing verification (including empty string checks), String representation.
+*   **Security**: RBAC (Role-Based Access Control) ensuring Students/Teachers cannot access Admin routes.
+*   **Edge Cases**: Duplicate email registration prevention, Enum handling (string vs Enum object).
+
+#### 2. `test_student_features.py` (Student Experience)
+*   **Dashboard**: Verifies access to attendance stats and upcoming classes.
+*   **Academics**: Curriculum view, Calendar event loading, Subject filtering.
+*   **Class Actions**: Joining classes (including prevention of duplicate joins), Viewing attendance history.
+*   **Profile**: Updating personal details (Phone, DOB), Changing passwords (with validation).
+*   **Account**: Account deletion flow and confirmation security.
+
+#### 3. `test_teacher_features.py` (Teacher Tools)
+*   **Class Management**: Dashboard "Live Class" detection, Editing class details (Sections), Viewing assigned classes (Active/Past semester filter).
+*   **Attendance**: Marking attendance (Lecture vs Lab handling), Preventing unauthorized modifications.
+*   **Enrollments**: Viewing enrollment requests, Approving/Rejecting students.
+*   **Security**: Ensuring teachers cannot edit or view reports for classes they don't own.
+
+#### 4. `test_admin_features.py` (System Administration)
+*   **User Management**: Adding Users with detailed profiles (Branch, DOB, Institution), Editing Users, Deleting Users (with self-delete protection).
+*   **Timetables**: Generating timetables (algorithm integration), Exporting to Excel/PDF.
+*   **System Settings**: Toggling Semester types (Odd/Even), managing global constraints.
+*   **Assignments**: Assigning teachers to subjects, Deleting assignments.
+
+#### 5. `test_timetable_engine.py` (Core Logic)
+*   **Algorithm**: Validates the genetic/heuristic algorithm for schedule generation.
+*   **Constraints**: Checks collision avoidance (Teacher double-booking, Student overlapping classes).
+*   **Optimization**: Verifies lunch break placement and load distribution.
+
+#### 6. `test_general_coverage.py` (Health Checks)
+*   **Route Availability**: Iterates through all registered Flask routes to ensure no 500 errors.
+*   **Static Assets**: Verifies critical templates and static files are reachable.
 
 ### Running Tests
 
-Run all tests from the project root:
+Run **all tests** from the project root:
 
 ```bash
 pytest
 ```
 
-Run specific test files:
+Run a specific feature suite (e.g., Teacher features):
 ```bash
-pytest tests/test_models.py
+pytest tests/test_teacher_features.py
 ```
 
-Run with verbose output:
+Run with verbose output to see individual test names:
 ```bash
 pytest -v
 ```
@@ -87,10 +110,15 @@ python utility/create_test_accounts.py
 ```
 
 ### Data Generation
-**`utility/add_sample_data.py`** & **`test_attendance_generator.py`**
-Populate the database with realistic attendance and grade data for testing scenarios.
+**`utility/add_sample_data.py`**
+Populates the database with basic sample data.
+
+**`utility/generate_realistic_attendance.py`** (Previously `test_attendance_generator.py`)
+A powerful interactive script to generate realistic, historical attendance patterns (Excellent, Good, Poor scenarios) for testing analytics.
 ```bash
-python utility/add_sample_data.py
-# or
-python test_attendance_generator.py
+python utility/generate_realistic_attendance.py
 ```
+*(Follow the on-screen menu instructions)*
+
+**`utility/check_calendar.py`**
+Quick utility to verify calendar event loading logic.

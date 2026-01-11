@@ -12,6 +12,33 @@
     </div>
 </div>
 
+<!-- Semester Toggle Section -->
+<div class="mb-4">
+    <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Active Semester</h4>
+    <form method="POST" action="{{ url_for('views.timetable') }}" onsubmit="return confirm('Are you sure you want to switch the active semester type? This will change which classes are visible to teachers.');">
+        <input type="hidden" name="action" value="toggle_semester" />
+        <div class="grid grid-cols-2 gap-2">
+            <button
+                type="submit"
+                name="semester_type"
+                value="odd"
+                class="px-3 py-2 rounded-lg text-sm font-medium transition duration-200 border {% if settings.active_semester_type == 'odd' %}bg-indigo-600 text-white border-indigo-600{% else %}bg-white text-gray-600 border-gray-300 hover:bg-gray-50{% endif %}"
+            >
+                Odd (1,3,5,7)
+            </button>
+            <button
+                type="submit"
+                name="semester_type"
+                value="even"
+                class="px-3 py-2 rounded-lg text-sm font-medium transition duration-200 border {% if settings.active_semester_type == 'even' %}bg-indigo-600 text-white border-indigo-600{% else %}bg-white text-gray-600 border-gray-300 hover:bg-gray-50{% endif %}"
+            >
+                Even (2,4,6,8)
+            </button>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Only classes from the active semester type will be shown to teachers.</p>
+    </form>
+</div>
+
 <!-- Management Section -->
 <div class="mb-4">
     <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Management</h4>
@@ -75,7 +102,7 @@
 
     <div class="space-y-12">
         {% for sem, data in timetables.items() %}
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden animate-fadeIn" style="animation-delay: {{ (loop.index * 100) ~ 'ms' }};">
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden animate-fadeIn" style="animation-delay: {{ loop.index * 100 }}ms">
             <div class="bg-primary-700 bg-darkblue text-white p-4 text-center">
                 <h4 class="text-xl font-bold">Semester {{ sem }} ({{ current_branch }})</h4>
             </div>

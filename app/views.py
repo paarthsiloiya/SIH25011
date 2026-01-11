@@ -836,8 +836,21 @@ def teacher_dashboard():
         flash('Access denied.', 'error')
         return redirect(url_for('auth.login'))
     
-    # Calculate statistics for dashboard
-    teacher_classes = AssignedClass.query.filter_by(teacher_id=current_user.id).all()
+    # Get active semester settings
+    settings = TimetableSettings.query.first()
+    active_sem_type = settings.active_semester_type if settings else 'odd'
+    
+    # Filter classes based on active semester type
+    # Join with Subject to check semester parity
+    query = AssignedClass.query.filter_by(teacher_id=current_user.id).join(Subject)
+    
+    if active_sem_type == 'even':
+        query = query.filter(Subject.semester % 2 == 0)
+    else:
+        # Odd: 1, 3, 5, 7
+        query = query.filter(Subject.semester % 2 != 0)
+        
+    teacher_classes = query.all()
     class_ids = [c.id for c in teacher_classes]
     
     stats = {
@@ -859,7 +872,35 @@ def teacher_dashboard():
             Enrollment.status == EnrollmentStatus.PENDING
         ).count()
     
-    return render_template('Teacher/dashboard.html', stats=stats)
+    # --- Find Active Class (Current Time) ---
+    current_time_obj = datetime.now()
+    day_name = current_time_obj.strftime('%A')
+    time_now = current_time_obj.time()
+    
+    # Query for a class currently in session for this teacher
+    # Must also respect the active semester filter
+    active_entry = TimetableEntry.query.join(AssignedClass).join(Subject).filter(
+        AssignedClass.teacher_id == current_user.id,
+        TimetableEntry.day == day_name,
+        TimetableEntry.start_time <= time_now,
+        TimetableEntry.end_time > time_now
+    )
+    
+    if active_sem_type == 'even':
+         active_entry = active_entry.filter(Subject.semester % 2 == 0)
+    else:
+         active_entry = active_entry.filter(Subject.semester % 2 != 0)
+         
+    active_entry = active_entry.first()
+    
+    active_class_info = None
+    if active_entry:
+        active_class_info = {
+            'class': active_entry.assigned_class,
+            'entry': active_entry
+        }
+    
+    return render_template('Teacher/dashboard.html', stats=stats, active_class_info=active_class_info)
 
 
 @views.route('/teacher/schedule')
@@ -872,7 +913,9 @@ def teacher_schedule():
     settings = TimetableSettings.query.first()
         
     # Semester Group Toggle (Odd/Even)
-    sem_group = request.args.get('group', 'odd') # Default to odd
+    # Default to active setting
+    active_sem_type = settings.active_semester_type if settings else 'odd'
+    sem_group = request.args.get('group', active_sem_type) 
     
     # Get teacher's assigned class IDs
     my_classes = AssignedClass.query.filter_by(teacher_id=current_user.id).all()
@@ -971,7 +1014,18 @@ def teacher_classes():
         flash('Access denied.', 'error')
         return redirect(url_for('auth.login'))
     
-    assigned_classes = AssignedClass.query.filter_by(teacher_id=current_user.id).all()
+    # Get active semester settings
+    settings = TimetableSettings.query.first()
+    active_sem_type = settings.active_semester_type if settings else 'odd'
+    
+    query = AssignedClass.query.filter_by(teacher_id=current_user.id).join(Subject)
+    
+    if active_sem_type == 'even':
+        query = query.filter(Subject.semester % 2 == 0)
+    else:
+        query = query.filter(Subject.semester % 2 != 0)
+        
+    assigned_classes = query.all()
     return render_template('Teacher/classes.html', assigned_classes=assigned_classes)
 
 @views.route('/teacher/class/<int:class_id>')
@@ -1000,11 +1054,16 @@ def teacher_mark_attendance(class_id):
     
     if request.method == 'POST':
         date_str = request.form.get('date')
-        try:
-            date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
-        except ValueError:
-            flash('Invalid date format', 'error')
-            return redirect(url_for('views.teacher_mark_attendance', class_id=class_id))
+        if date_str:
+            try:
+                date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+            except ValueError:
+                flash('Invalid date format', 'error')
+                return redirect(url_for('views.teacher_mark_attendance', class_id=class_id))
+        else:
+            # Default to today if no date provided
+            date_obj = datetime.now().date()
+            date_str = date_obj.strftime('%Y-%m-%d')
             
         # Check if attendance already exists for this date
         from .models import Attendance
@@ -1042,11 +1101,13 @@ def teacher_mark_attendance(class_id):
                 # check outside loop.
                 pass 
             else:
+                class_type = 'lab' if assigned_class.subject.is_lab else 'lecture'
                 new_record = Attendance(
                     user_id=student.id,
                     subject_id=assigned_class.subject_id,
                     date=date_obj,
-                    status=status
+                    status=status,
+                    class_type=class_type
                 )
                 db.session.add(new_record)
             count += 1
@@ -1456,6 +1517,19 @@ def timetable():
                  db.session.rollback()
                  flash(f'Error resetting timetable: {e}', 'error')
                  
+             return redirect(url_for('views.timetable'))
+
+        elif action == 'toggle_semester':
+             if not settings:
+                 # Create default settings if they don't exist
+                 settings = TimetableSettings()
+                 db.session.add(settings)
+            
+             new_type = request.form.get('semester_type')
+             if new_type in ['odd', 'even']:
+                 settings.active_semester_type = new_type
+                 db.session.commit()
+                 flash(f'Active semester type set to {new_type.upper()}', 'success')
              return redirect(url_for('views.timetable'))
 
     # GET

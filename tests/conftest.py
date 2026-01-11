@@ -12,6 +12,10 @@ from app.models import db as _db, User, UserRole
 @pytest.fixture(scope='session')
 def app():
     """Create application for the tests."""
+    # Force in-memory database configuration BEFORE creating app
+    # to prevent create_app() from touching the real database file
+    os.environ['DATABASE_URL'] = "sqlite:///:memory:"
+       
     app = create_app()
     app.config.update({
         "TESTING": True,

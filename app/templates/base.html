@@ -312,28 +312,36 @@
 
         <!-- Right Sidebar -->
         {% if not hide_right_sidebar %}
-        <aside class="w-80 bg-white shadow-lg p-6 flex flex-col space-y-6 fixed right-4 top-4 bottom-4 rounded-r-3xl">
+        <aside class="w-80 bg-white shadow-lg px-6 py-6 flex flex-col fixed right-4 top-4 bottom-4 rounded-r-3xl">
             <!-- Profile -->
-            <a href="{{ url_for('views.settings') }}" class="cursor-pointer flex items-center justify-between">
-                <!-- Name and Role on the left -->
-                <div class="flex-1">
-                    <h2 class="text-xl font-bold">{{ current_user.name }}</h2>
-                    <p class="text-sm text-gray-500">{{ current_user.role.name|title }}, {{ current_user.institution if current_user.institution else "Delhi" }}</p>
-                </div>
-                <!-- Profile icon on the right -->
-                <div class="w-16 h-16 rounded-full bg-skyblue flex items-center justify-center text-2xl ml-4"><i data-feather="user" class="w-8 h-8 text-white"></i></div>
-            </a>
+            <div class="flex-shrink-0 mb-6">
+                <a href="{{ url_for('views.settings') }}" class="cursor-pointer flex items-center justify-between">
+                    <!-- Name and Role on the left -->
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold">{{ current_user.name }}</h2>
+                        <p class="text-sm text-gray-500">{{ current_user.role.name|title }}, {{ current_user.institution if current_user.institution else "Delhi" }}</p>
+                    </div>
+                    <!-- Profile icon on the right -->
+                    <div class="w-16 h-16 rounded-full bg-skyblue flex items-center justify-center text-2xl ml-4"><i data-feather="user" class="w-8 h-8 text-white"></i></div>
+                </a>
+            </div>
 
             <!-- Calendar will be inserted here from child templates -->
-            {% block sidebar_content %}{% endblock %}
+            <div class="flex-1 overflow-y-auto -mr-4 pr-4 custom-scrollbar">
+                <div class="space-y-6">
+                    {% block sidebar_content %}{% endblock %}
+                </div>
+            </div>
 
             <!-- Queries - Only shown on Dashboard and Attendance pages, but NOT for Admin -->
             {% if request.endpoint in ['views.student_dashboard', 'views.teacher_dashboard', 'views.attendance'] and current_user.role.name != 'ADMIN' %}
-            <div>
+            <div class="flex-shrink-0 mt-6 pt-4 border-t border-gray-100">
                 <h3 class="font-bold flex items-center"><i data-feather="help-circle" class="w-5 h-5 mr-2 text-gray-600"></i> Queries</h3>
                 <div id="queryMessage" class="text-sm text-green-600 mt-2"></div>
-                <button onclick="raiseQuery()" class="bg-skyblue text-white px-3 py-1 rounded-lg mr-2">Raise</button>
-                <button onclick="revokeQuery()" class="bg-red-500 text-white px-3 py-1 rounded-lg">Revoke</button>
+                <div class="mt-2">
+                    <button onclick="raiseQuery()" class="bg-skyblue text-white px-3 py-1 rounded-lg mr-2 hover:bg-blue-300 transition">Raise</button>
+                    <button onclick="revokeQuery()" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">Revoke</button>
+                </div>
             </div>
             {% endif %}
         </aside>
